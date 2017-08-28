@@ -33,13 +33,16 @@ class MainActivity : AppCompatActivity() {
     lateinit var hit:MediaPlayer
     lateinit var moo:MediaPlayer
 
+    val c0=0
     var refx= ArrayList<Float>()
     var score_i=0
 
     var LV1=50
+
     var LV2=100
     var LV3=175
     var LV4=250
+
 
     lateinit var ctx : Context
     lateinit var act : Activity
