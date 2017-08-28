@@ -13,6 +13,7 @@ class Game(internal var buttons: ArrayList<Button>,internal var callback:GenricC
 
 
     var score : Int =0
+    var fails = 0
     val RUNNING =12
     val ENDED=13
     val PAUSED=14
@@ -50,6 +51,24 @@ class Game(internal var buttons: ArrayList<Button>,internal var callback:GenricC
 
     fun enable1(n: Int) {
 
+        val btn=buttons[n]
+        btn.setOnClickListener {
+
+
+            next()
+
+
+        }
+
+    }
+
+    fun next()
+    {
+
+        disableall()
+        enable1(ran())
+
+        callback.onUpdate(++score)
 
     }
 
@@ -58,17 +77,19 @@ class Game(internal var buttons: ArrayList<Button>,internal var callback:GenricC
 
 
         STATE=RUNNING
-        disableall()
+
         h=Handler()
         run= Runnable {
 
-
-            val random:Random = Random()
-            val x=random.nextInt(buttons.size)
             duration-=30
-            h.postDelayed(run,duration)
+          //  h.postDelayed(run,duration)
 
         }
+
+
+
+        next()
+
 
 
 
@@ -90,5 +111,13 @@ class Game(internal var buttons: ArrayList<Button>,internal var callback:GenricC
 
     }
 
+    fun ran():Int{
+
+        val random:Random = Random()
+        val x=random.nextInt(buttons.size)
+
+        return x
+
+    }
 
 }
