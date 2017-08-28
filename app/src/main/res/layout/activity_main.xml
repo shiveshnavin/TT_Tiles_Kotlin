@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/activity_main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/red_400"
+    tools:context="in.hoptec.kotlin101.MainActivity">
+
+    <com.daniribalbert.customfontlib.views.CustomFontTextView
+
+        android:textSize="40sp"
+        android:gravity="center"
+        android:textColor="@color/yellow_200"
+        app:font="androidnation_b"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Tap Tap Tile"
+        android:id="@+id/name"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="38dp" />
+
+
+
+    <com.daniribalbert.customfontlib.views.CustomFontTextView
+
+        android:gravity="center"
+        android:textSize="15sp"
+        android:layout_marginTop="5dp"
+        android:textColor="@color/yellow_400"
+        app:font="androidnation"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Powered By \nKotlin"
+        android:id="@+id/kotlin"
+        android:layout_below="@+id/name"
+        android:layout_centerHorizontal="true" />
+
+
+    <LinearLayout
+        android:layout_marginTop="10dp"
+        android:id="@+id/tiles"
+        android:orientation="vertical"
+        android:weightSum="9"
+        android:layout_below="@+id/score"
+        android:layout_width="500dp"
+        android:layout_height="match_parent"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true">
+
+
+
+
+    </LinearLayout>
+
+    <com.daniribalbert.customfontlib.views.CustomFontTextView
+
+        android:gravity="center"
+        android:textSize="23sp"
+        android:textColor="@color/yellow_200"
+        app:font="arcade"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Score : 0"
+        android:id="@+id/score"
+        android:layout_below="@+id/kotlin"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_marginTop="39dp" />
+
+</RelativeLayout>
