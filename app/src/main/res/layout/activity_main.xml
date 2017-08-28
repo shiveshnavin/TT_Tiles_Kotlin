@@ -9,7 +9,6 @@
     tools:context="in.hoptec.kotlin101.MainActivity">
 
     <com.daniribalbert.customfontlib.views.CustomFontTextView
-
         android:textSize="40sp"
         android:gravity="center"
         android:textColor="@color/yellow_200"
@@ -33,7 +32,7 @@
         android:textColor="@color/yellow_400"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Powered By \nKotlin"
+        android:text="Powered By : Kotlin"
         android:id="@+id/kotlin"
         android:layout_below="@+id/score"
         android:layout_centerHorizontal="true" />
@@ -41,7 +40,7 @@
 
 
     <LinearLayout
-        android:alpha="1"
+        android:visibility="gone"
         android:gravity="center"
         android:layout_marginTop="10dp"
         android:id="@+id/gameover"

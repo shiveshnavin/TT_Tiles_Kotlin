@@ -1,15 +1,18 @@
 package `in`.hoptec.kotlin101
 
 import `in`.hoptec.kotlin101.utils.GenricCallback
+import android.content.Context
 import android.os.Handler
 import android.widget.Button
+import com.daimajia.androidanimations.library.Techniques
+import com.daimajia.androidanimations.library.YoYo
 import java.util.*
 
 /**
  * Created by shivesh on 28/8/17.
  */
 
-class Game(internal var buttons: ArrayList<Button>,internal var callback:GenricCallback) {
+class Game(internal var ctx:Context,internal var buttons: ArrayList<Button>,internal var callback:GenricCallback) {
 
 
     var lastrxn=System.currentTimeMillis()
@@ -57,6 +60,8 @@ class Game(internal var buttons: ArrayList<Button>,internal var callback:GenricC
            }
 
         }
+        YoYo.with(Techniques.Shake).duration(200).playOn(btn)
+
 
     }
 
@@ -64,6 +69,7 @@ class Game(internal var buttons: ArrayList<Button>,internal var callback:GenricC
     fun enable1(n: Int) {
 
         utl.l("Game enable1 "+n)
+
 
 
         val btn=buttons[n]
@@ -82,6 +88,7 @@ class Game(internal var buttons: ArrayList<Button>,internal var callback:GenricC
 
 
         }
+        YoYo.with(Techniques.Tada).duration(200).playOn(btn)
 
     }
 

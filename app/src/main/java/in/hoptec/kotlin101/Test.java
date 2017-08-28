@@ -1,5 +1,8 @@
 package in.hoptec.kotlin101;
 
+import android.content.Intent;
+import android.os.Build;
+import android.support.v4.app.ActivityOptionsCompat;
 import android.view.ContextThemeWrapper;
 import android.view.Gravity;
 import android.view.View;
@@ -20,10 +23,7 @@ public class Test {
     Test()
     {
 
-        ArrayList<View> views=new ArrayList<>();
-
-        views.add(new View(new ContextThemeWrapper()));
 
 
-     }
+    }
 }

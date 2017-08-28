@@ -60,6 +60,8 @@ import `in`.hoptec.kotlin101.utils.FileOperations
 import `in`.hoptec.kotlin101.utils.GenricCallback
 
 import android.content.Context.MODE_PRIVATE
+import java.lang.Float.parseFloat
+import java.lang.Integer.parseInt
 
 /**
  * Created by shivesh on 28/6/17.
@@ -70,6 +72,9 @@ class utl {
     private fun isValidMail(email: String): Boolean {
         return android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches()
     }
+
+
+
 
 
     private fun isAppIsInBackground(context: Context): Boolean {

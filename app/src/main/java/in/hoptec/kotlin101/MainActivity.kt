@@ -25,9 +25,11 @@ class MainActivity : AppCompatActivity() {
 
 
 
+   var refx= ArrayList<Float>()
+
     lateinit var ctx : Context
     lateinit var act : Activity
-    var rxn =0.0
+    var rxn =0f
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -67,11 +69,14 @@ class MainActivity : AppCompatActivity() {
 
 
         tiles.visibility=VISIBLE
-        finals.visibility= VISIBLE
+        gameover.visibility= GONE
 
 
 
         tiles.removeAllViews()
+
+        tile_list= ArrayList<Button>()
+        refx= ArrayList<Float>()
 
         var i : Int  =0
         tiles.weightSum=9f
@@ -126,7 +131,7 @@ class MainActivity : AppCompatActivity() {
             startGame()
         }
 
-        utl.snack(act,"Tap first tile to start !")
+       // utl.snack(act,"Tap first tile to start !")
 
 
     }
@@ -138,9 +143,11 @@ class MainActivity : AppCompatActivity() {
        val call_back = object : GenricCallback {
            override fun onRxn(reaction: Any) {
 
-               kotlin.setText("Your Reflex : "+parseFloat(reaction.toString())/1000+" s")
+               kotlin.setText("Your  Reflex : "+parseFloat(reaction.toString())/1000+"   s")
                rxn=rxn+parseFloat(reaction.toString())/1000
 
+
+               refx.add(parseFloat(reaction.toString())/1000)
            }
 
            override fun onStart() {
@@ -153,7 +160,17 @@ class MainActivity : AppCompatActivity() {
 
             tiles.visibility=GONE
             gameover.visibility= VISIBLE
-            finals.setText("Score : "+scor2.toString()+"\nAvg Reflex : "+(rxn/ parseInt(scor2.toString())))
+            var ttl=0f
+
+            for(ref in refx)
+            {
+                ttl=ttl+ref
+            }
+            var avg=ttl/refx.size
+
+            //finals.setText("Score : "+scor2.toString()+"\nAvg.  Reflex : "+roundoff(rxn/ (parseInt(scor2.toString())+1),3)+"  s")
+
+            finals.setText("Score : "+scor2.toString()+"\nAvg.  Reflex : "+roundoff(avg,3)+"  s")
 
 
 
@@ -177,7 +194,7 @@ class MainActivity : AppCompatActivity() {
 
 
 
-        val game : Game =Game(tile_list,call_back)
+        val game : Game =Game(ctx,tile_list,call_back)
         game.start()
 
 
@@ -186,7 +203,14 @@ class MainActivity : AppCompatActivity() {
     }
 
 
+    fun roundoff( floa : Float , n:Int) : Float
+    {
+        val it:Float =parseFloat(""+(floa*(Math.pow(10.0, parseDouble(""+n)))))
 
+        val intt=it.toInt()
+
+        return intt/Math.pow(10.0, parseDouble(""+n)).toFloat();
+    }
 
 
 }

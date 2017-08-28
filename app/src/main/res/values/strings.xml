@@ -1,3 +1,5 @@
 <resources>
-    <string name="app_name">Kotlin101</string>
+    <string name="app_name">Tap Tap Tiles</string>
+    <string name="tran">tran</string>
+
 </resources>
