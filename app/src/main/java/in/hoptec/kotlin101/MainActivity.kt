@@ -3,6 +3,7 @@ package `in`.hoptec.kotlin101
 import `in`.hoptec.kotlin101.utils.GenricCallback
 import android.app.Activity
 import android.content.Context
+import android.media.MediaPlayer
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.support.v7.view.ContextThemeWrapper
@@ -25,7 +26,11 @@ class MainActivity : AppCompatActivity() {
 
 
 
-   var refx= ArrayList<Float>()
+    lateinit var music:MediaPlayer
+    lateinit var hit:MediaPlayer
+    lateinit var moo:MediaPlayer
+
+    var refx= ArrayList<Float>()
     var score_i=0
 
     val LV1=50
@@ -45,20 +50,40 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
 
 
+        moo= MediaPlayer.create(ctx,R.raw.moo)
+
+        music= MediaPlayer.create(ctx,R.raw.razor)
+        music.seekTo(2000)
+        music.setOnPreparedListener {
+
+
+        }
+
+        hit= MediaPlayer.create(ctx,R.raw.tap)
+
+
         activity_main.setBackgroundColor(R.color.cart_back)
 
-        utl.changeColorDrawable(restart,R.color.white)
+//        utl.changeColorDrawable(restart,R.color.white)
 
         addtiles()
 
         restart.setOnClickListener {
 
+            if(moo.isPlaying) {
+                moo.seekTo(0)
+              moo.pause()
+            }
             addtiles()
 
         }
 
 
+//        music.prepare()
 
+
+      //  moo.prepare()
+       // hit.prepare()
 
 
     }
@@ -72,6 +97,9 @@ class MainActivity : AppCompatActivity() {
 
     fun addtiles()
     {
+
+
+        startMusic()
 
 
 
@@ -147,8 +175,7 @@ class MainActivity : AppCompatActivity() {
     fun startGame()
     {
         utl.l("Starting Game")
-
-       val call_back = object : GenricCallback {
+ val call_back = object : GenricCallback {
            override fun onRxn(reaction: Any) {
 
                kotlin.setText("Your  Reflex : "+parseFloat(reaction.toString())/1000+"   s")
@@ -164,6 +191,8 @@ class MainActivity : AppCompatActivity() {
 
         override fun onGameEnd(scor2: Any) {
 
+            endMusic()
+            laugh()
             score.setText("Score : "+scor2.toString())
 
             score_i=0
@@ -192,6 +221,7 @@ class MainActivity : AppCompatActivity() {
 
         override fun onUpdate(scor: Any) {
 
+            hit()
 
             score.setText("Score : "+scor.toString())
             score_i=parseInt(scor.toString())
@@ -237,7 +267,7 @@ class MainActivity : AppCompatActivity() {
         game.start()
 
 
-        utl.animateBackGround(activity_main,"#FF5722","#00E099",true,10000)
+        utl.animateBackGround(activity_main,"#FF5722","#0a8f08",true,10000)
 
     }
 
@@ -250,6 +280,99 @@ class MainActivity : AppCompatActivity() {
 
         return intt/Math.pow(10.0, parseDouble(""+n)).toFloat();
     }
+
+
+    fun startMusic()
+    {
+
+        try {
+
+
+            music.isLooping=true
+
+
+            if(moo.isPlaying) {
+
+
+                moo.seekTo(0)
+                moo.pause()
+
+            }
+            music.start()
+        } catch(e: Exception) {
+        }
+
+
+    }
+    fun endMusic()
+    {
+
+
+
+        try {
+
+
+            if(music.isPlaying) {
+                music.seekTo(2000)
+                music.pause()
+
+            }
+
+
+        } catch(e: Exception) {
+        }
+
+    }
+
+    fun hit()
+    {
+
+
+        try {
+            if(hit.isPlaying)
+            {
+                hit.seekTo(200)
+                hit.pause()
+            }
+            hit.start()
+
+        } catch(e: Exception) {
+        }
+
+    }
+
+
+    fun laugh()
+    {
+
+        try {
+            moo.start()
+        } catch(e: Exception) {
+            moo.reset()
+            moo= MediaPlayer.create(ctx,R.raw.moo)
+        }
+
+    }
+
+    override fun onDestroy() {
+
+        try {
+            moo.stop()
+        } catch(e: Exception) {
+        }
+        try {
+            music.stop()
+        } catch(e: Exception) {
+        }
+        try {
+            hit.stop()
+        } catch(e: Exception) {
+        }
+        super.onDestroy()
+    }
+
+
+
 
 
 }

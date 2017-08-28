@@ -56,7 +56,7 @@
 
             android:textSize="25sp"
             android:gravity="center"
-            android:textColor="@color/yellow_200"
+            android:textColor="@color/grey_300"
             app:font="androidnation"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -70,7 +70,7 @@
 
             android:gravity="center"
             android:textSize="20sp"
-            android:textColor="@color/yellow_200"
+            android:textColor="@color/grey_400"
             app:font="arcade"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -81,7 +81,7 @@
             android:layout_alignParentStart="true" />
 
         <ImageView
-            android:src="@drawable/ic_cached_black_48dp"
+            android:src="@drawable/ic_cached_white_48dp"
             android:textSize="25sp"
             android:layout_marginTop="20dp"
             android:padding="10dp"
