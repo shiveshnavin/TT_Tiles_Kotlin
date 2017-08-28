@@ -13,6 +13,7 @@ class Splash : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        utl.fullScreen(this)
         setContentView(R.layout.activity_splash)
         val iit = Intent(this, MainActivity::class.java)
 

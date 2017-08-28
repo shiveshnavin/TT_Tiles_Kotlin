@@ -26,6 +26,12 @@ class MainActivity : AppCompatActivity() {
 
 
    var refx= ArrayList<Float>()
+    var score_i=0
+
+    val LV1=50
+    val LV2=70
+    val LV3=120
+    val LV4=150
 
     lateinit var ctx : Context
     lateinit var act : Activity
@@ -41,6 +47,7 @@ class MainActivity : AppCompatActivity() {
 
         activity_main.setBackgroundColor(R.color.cart_back)
 
+        utl.changeColorDrawable(restart,R.color.white)
 
         addtiles()
 
@@ -79,7 +86,7 @@ class MainActivity : AppCompatActivity() {
         refx= ArrayList<Float>()
 
         var i : Int  =0
-        tiles.weightSum=9f
+        tiles.weightSum=sqr.toFloat()*sqr.toFloat()
 
         while(i++<sqr)
         {
@@ -90,8 +97,8 @@ class MainActivity : AppCompatActivity() {
 
             params.gravity=LinearLayout.VERTICAL
             row.gravity=Gravity.CENTER
-            params.weight=3f
-            row.weightSum=9f
+            params.weight=sqr.toFloat()
+            row.weightSum=sqr.toFloat()*sqr.toFloat()
             row.layoutParams=params
 
                     while(j++<sqr)
@@ -101,7 +108,7 @@ class MainActivity : AppCompatActivity() {
 
                         params.gravity=LinearLayout.VERTICAL
 
-                        params.weight=3f
+                        params.weight=sqr.toFloat()
 
 
 
@@ -136,6 +143,7 @@ class MainActivity : AppCompatActivity() {
 
     }
 
+    lateinit var game : Game
     fun startGame()
     {
         utl.l("Starting Game")
@@ -158,6 +166,8 @@ class MainActivity : AppCompatActivity() {
 
             score.setText("Score : "+scor2.toString())
 
+            score_i=0
+            sqr=3
             tiles.visibility=GONE
             gameover.visibility= VISIBLE
             var ttl=0f
@@ -184,8 +194,33 @@ class MainActivity : AppCompatActivity() {
 
 
             score.setText("Score : "+scor.toString())
+            score_i=parseInt(scor.toString())
+
+            if(score_i==LV1) {
+                sqr++
+                addtiles()
+
+            }
+
+            if(score_i==LV2) {
+                sqr++
+                addtiles()
+
+            }
 
 
+            if(score_i==LV3) {
+                sqr++
+                addtiles()
+
+            }
+
+
+            if(score_i==LV4) {
+                sqr++
+                addtiles()
+
+            }
         }
 
 
@@ -194,7 +229,11 @@ class MainActivity : AppCompatActivity() {
 
 
 
-        val game : Game =Game(ctx,tile_list,call_back)
+        game =Game(ctx,tile_list,call_back)
+        if(sqr>3)
+        {
+            game.score=score_i
+        }
         game.start()
 
 
