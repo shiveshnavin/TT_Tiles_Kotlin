@@ -3,7 +3,10 @@ package `in`.hoptec.kotlin101
 import `in`.hoptec.kotlin101.utils.GenricCallback
 import android.app.Activity
 import android.content.Context
+import android.media.AudioManager
 import android.media.MediaPlayer
+import android.media.SoundPool
+import android.os.Build
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.support.v7.view.ContextThemeWrapper
@@ -33,10 +36,10 @@ class MainActivity : AppCompatActivity() {
     var refx= ArrayList<Float>()
     var score_i=0
 
-    val LV1=50
-    val LV2=70
-    val LV3=120
-    val LV4=150
+    var LV1=50
+    var LV2=100
+    var LV3=175
+    var LV4=250
 
     lateinit var ctx : Context
     lateinit var act : Activity
@@ -49,17 +52,31 @@ class MainActivity : AppCompatActivity() {
         act=this
         setContentView(R.layout.activity_main)
 
+        name.setOnLongClickListener {
+
+             LV1=10
+             LV2=20
+             LV3=30
+             LV4=40
+
+            false
+
+        }
+
+
 
         moo= MediaPlayer.create(ctx,R.raw.moo)
 
-        music= MediaPlayer.create(ctx,R.raw.razor)
+        music= MediaPlayer.create(ctx,R.raw.razor_l)
         music.seekTo(2000)
         music.setOnPreparedListener {
 
 
         }
 
-        hit= MediaPlayer.create(ctx,R.raw.tap)
+        hit= MediaPlayer.create(ctx,R.raw.tap_h)
+
+        InitSound()
 
 
         activity_main.setBackgroundColor(R.color.cart_back)
@@ -70,6 +87,7 @@ class MainActivity : AppCompatActivity() {
 
         restart.setOnClickListener {
 
+            hit()
             if(moo.isPlaying) {
                 moo.seekTo(0)
               moo.pause()
@@ -329,13 +347,12 @@ class MainActivity : AppCompatActivity() {
 
 
         try {
-            if(hit.isPlaying)
-            {
-                hit.seekTo(200)
-                hit.pause()
-            }
+            playSound(1)
+           /* if(hit.isPlaying)
+                hit.stop()
             hit.start()
 
+*/
         } catch(e: Exception) {
         }
 
@@ -364,7 +381,7 @@ class MainActivity : AppCompatActivity() {
             music.stop()
         } catch(e: Exception) {
         }
-        try {
+        try {cleanUpIfEnd()
             hit.stop()
         } catch(e: Exception) {
         }
@@ -372,6 +389,45 @@ class MainActivity : AppCompatActivity() {
     }
 
 
+
+    fun cleanUpIfEnd() {
+
+        soundPool!!.release()
+        soundPool = null
+    }
+
+
+
+         var soundPool: SoundPool? = null
+        lateinit  var sm: IntArray
+        lateinit  var amg: AudioManager
+
+
+        fun InitSound() {
+
+            val maxStreams = 1
+            val mContext : Context =ctx
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                soundPool = SoundPool.Builder()
+                        .setMaxStreams(maxStreams)
+                        .build()
+            } else {
+                soundPool = SoundPool(maxStreams, AudioManager.STREAM_MUSIC, 0)
+            }
+
+            sm = IntArray(3)
+            // fill your sounds
+            sm[0] = soundPool!!.load(mContext, R.raw.razor_l, 1)
+            sm[1] = soundPool!!.load(mContext, R.raw.tap_h, 1)
+            sm[2] = soundPool!!.load(mContext, R.raw.moo, 1)
+
+            amg = mContext.getSystemService(Context.AUDIO_SERVICE) as AudioManager
+        }
+
+         fun playSound(sound: Int) {
+
+            soundPool!!.play(sm!![sound], 1f, 1f, 1, 0, 1f)
+        }
 
 
 
