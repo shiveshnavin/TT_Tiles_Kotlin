@@ -28,15 +28,74 @@
 
         android:gravity="center"
         android:textSize="15sp"
+        app:font="arcade"
         android:layout_marginTop="5dp"
         android:textColor="@color/yellow_400"
-        app:font="androidnation"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Powered By \nKotlin"
         android:id="@+id/kotlin"
-        android:layout_below="@+id/name"
+        android:layout_below="@+id/score"
         android:layout_centerHorizontal="true" />
+
+
+
+    <LinearLayout
+        android:alpha="1"
+        android:gravity="center"
+        android:layout_marginTop="10dp"
+        android:id="@+id/gameover"
+        android:orientation="vertical"
+        android:weightSum="9"
+        android:layout_below="@+id/kotlin"
+        android:layout_width="500dp"
+        android:layout_height="match_parent"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true">
+
+        <com.daniribalbert.customfontlib.views.CustomFontTextView
+
+            android:textSize="25sp"
+            android:gravity="center"
+            android:textColor="@color/yellow_200"
+            app:font="androidnation"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Game Over"
+            android:id="@+id/over"
+            android:layout_alignParentTop="true"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="38dp" />
+
+        <com.daniribalbert.customfontlib.views.CustomFontTextView
+
+            android:gravity="center"
+            android:textSize="20sp"
+            android:textColor="@color/yellow_200"
+            app:font="arcade"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Score : 0"
+            android:id="@+id/finals"
+            android:layout_below="@+id/name"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true" />
+
+        <com.daniribalbert.customfontlib.views.CustomFontTextView
+            android:textSize="25sp"
+            android:layout_marginTop="20dp"
+            android:padding="10dp"
+            android:gravity="center"
+            android:background="@drawable/rounded_selector"
+            android:id="@+id/restart"
+            android:text="RESTART"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+
+
+    </LinearLayout>
 
 
     <LinearLayout
@@ -44,7 +103,7 @@
         android:id="@+id/tiles"
         android:orientation="vertical"
         android:weightSum="9"
-        android:layout_below="@+id/score"
+        android:layout_below="@+id/kotlin"
         android:layout_width="500dp"
         android:layout_height="match_parent"
         android:layout_alignParentBottom="true"
@@ -66,7 +125,7 @@
         android:layout_height="wrap_content"
         android:text="Score : 0"
         android:id="@+id/score"
-        android:layout_below="@+id/kotlin"
+        android:layout_below="@+id/name"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
         android:layout_marginTop="39dp" />

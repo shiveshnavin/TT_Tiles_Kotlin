@@ -12,6 +12,8 @@ import java.util.*
 class Game(internal var buttons: ArrayList<Button>,internal var callback:GenricCallback) {
 
 
+    var lastrxn=System.currentTimeMillis()
+    var currxn=System.currentTimeMillis()
     var score : Int =0
     var fails = 0
     val RUNNING =12
@@ -26,18 +28,28 @@ class Game(internal var buttons: ArrayList<Button>,internal var callback:GenricC
 
     fun disableall() {
 
+        utl.l("Game disableAll")
 
         var i=buttons.size-1
-        while(i-->=0)
-            disable1(i)
+        while(i>-1){
+
+
+            disable1(i--)
+
+
+        }
 
     }
 
 
     fun disable1(n: Int) {
 
-        buttons.get(n).setBackgroundColor(R.color.grey_400)
-        buttons.get(n).setOnClickListener {
+        utl.l("Game disable1 "+n)
+        val btn=buttons[n]
+
+        btn.setBackgroundResource(R.drawable.tile_bg)
+
+        btn.setOnClickListener {
 
            if(STATE== RUNNING)
            {
@@ -51,10 +63,21 @@ class Game(internal var buttons: ArrayList<Button>,internal var callback:GenricC
 
     fun enable1(n: Int) {
 
+        utl.l("Game enable1 "+n)
+
+
         val btn=buttons[n]
+
+
+        btn.setBackgroundResource(R.drawable.tile_bg_on)
+        btn.requestFocus()
         btn.setOnClickListener {
 
 
+            lastrxn=currxn
+            currxn=System.currentTimeMillis()
+            var diff=currxn-lastrxn
+            callback.onRxn(diff)
             next()
 
 
@@ -64,6 +87,8 @@ class Game(internal var buttons: ArrayList<Button>,internal var callback:GenricC
 
     fun next()
     {
+        utl.l("Game Next " )
+
 
         disableall()
         enable1(ran())
@@ -99,8 +124,11 @@ class Game(internal var buttons: ArrayList<Button>,internal var callback:GenricC
     {
         STATE=ENDED
 
-        disableall()
 
+        disableall()
+        utl.l("On Game End")
+
+        callback.onGameEnd(score)
     }
 
 
@@ -113,8 +141,11 @@ class Game(internal var buttons: ArrayList<Button>,internal var callback:GenricC
 
     fun ran():Int{
 
+
         val random:Random = Random()
         val x=random.nextInt(buttons.size)
+
+        utl.l("Game Random "+x)
 
         return x
 
