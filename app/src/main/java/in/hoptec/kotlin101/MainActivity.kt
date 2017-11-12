@@ -157,6 +157,7 @@ class MainActivity : AppCompatActivity() {
         act=this
         setContentView(R.layout.activity_main)
 
+        Constants.init(this)
 
         FirebaseApp.initializeApp(this)
 
