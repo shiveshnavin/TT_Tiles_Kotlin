@@ -59,6 +59,8 @@ class MainActivity : AppCompatActivity() {
         act=this
         setContentView(R.layout.activity_main)
 
+        setSupportActionBar(toolbar)
+
         name.setOnLongClickListener {
 
              LV1=10
@@ -240,6 +242,7 @@ class MainActivity : AppCompatActivity() {
 
 
 
+
          life.setText(lie?.toString())
          //        YoYo.with(Techniques.Tada).duration(200).playOn(btn)
 
@@ -281,12 +284,19 @@ class MainActivity : AppCompatActivity() {
 
             //finals.setText("Score : "+scor2.toString()+"\nAvg.  Reflex : "+roundoff(rxn/ (parseInt(scor2.toString())+1),3)+"  s")
 
-            finals.setText("Score : "+scor2.toString()+"\nAvg.  Reflex : "+roundoff(avg,3)+"  s")
+            var sco:Float= parseFloat(scor2.toString())
+            scor=(1.0f-roundoff(avg,3))*(sco)*100.0f
+//          finals.setText("Score : "+scor2.toString()+"\nAvg.  Reflex : "+roundoff(avg,3)+"  s")
+
+            finals.setText("Score : "+scor+"\nAvg.  Reflex : "+roundoff(avg,3)+"  s")
 
 
 
         }
 
+
+
+     var scor : Float= 0.0f
         override fun onDo(obj: Any, obj2: Any) {
 
         }

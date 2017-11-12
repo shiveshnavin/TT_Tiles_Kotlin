@@ -11,10 +11,11 @@
 
     <android.support.v7.widget.Toolbar
         android:id="@+id/toolbar"
+        android:layout_marginBottom="10dp"
         android:layout_marginRight="5dp"
 
         android:layout_width="match_parent"
-        android:layout_height="40dp">
+        android:layout_height="50dp">
 
         <LinearLayout
             android:orientation="horizontal"
@@ -50,7 +51,7 @@
 
     <com.daniribalbert.customfontlib.views.CustomFontTextView
         android:textSize="40sp"
-        android:layout_below="@+id/toolbar"
+
         android:gravity="center"
         android:textColor="@color/yellow_200"
         app:font="androidnation_b"
@@ -60,7 +61,7 @@
         android:id="@+id/name"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="38dp" />
+        android:layout_marginTop="55dp" />
 
 
 
@@ -163,7 +164,7 @@
         app:font="arcade"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Score : 0"
+        android:text="Hits : 0"
         android:id="@+id/score"
         android:layout_below="@+id/name"
         android:layout_alignParentLeft="true"

@@ -15,7 +15,7 @@ import java.util.*
 class Game(internal var ctx:Context,internal var buttons: ArrayList<Button>,internal var callback:GenricCallback) {
 
 
-    var is_mode_free=true
+    var is_mode_free=false
     var lastrxn=System.currentTimeMillis()
     var currxn=System.currentTimeMillis()
     var score : Int =0
@@ -78,6 +78,7 @@ class Game(internal var ctx:Context,internal var buttons: ArrayList<Button>,inte
         val btn=buttons[n]
         var clicked=false
 
+        if(!is_mode_free)
         btn.postDelayed( Runnable {
 
 
@@ -149,7 +150,8 @@ class Game(internal var ctx:Context,internal var buttons: ArrayList<Button>,inte
         {
             end()
         }
-        callback.onLife(life)
+        if(life>-1)
+          callback.onLife(life)
 
 
     }
@@ -172,7 +174,7 @@ class Game(internal var ctx:Context,internal var buttons: ArrayList<Button>,inte
 
 
 
-        callback.onLife(3)
+        callback.onLife(life)
 
 
     }
