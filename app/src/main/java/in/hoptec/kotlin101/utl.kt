@@ -121,7 +121,7 @@ class utl {
 
         var js = Gson()
 
-      lateinit  var ctx: Context
+       lateinit var ctx: Context
 
         /** */
         fun init(ctxx: Context) {
@@ -623,14 +623,14 @@ class utl {
 
         }
 
-        var TYPE_EMAIL: Int? = 120
-        var TYPE_PHONE: Int? = 293
-        var TYPE_DEF: Int? = 101
+        var TYPE_EMAIL: Int = 120
+        var TYPE_PHONE: Int = 293
+        var TYPE_DEF: Int = 101
 
 
       lateinit  var input: EditText
 
-        fun inputDialog(ctx: Context, title: String, message: String, TYPE : Int?, callback: InputDialogCallback): AlertDialog {
+        fun inputDialog(ctx: Context, title: String, message: String, TYPE : Int, callback: InputDialogCallback): AlertDialog {
             val alert = AlertDialog.Builder(ContextThemeWrapper(ctx, R.style.MyAlertDialogStyle))
             alert.setTitle(title)
             alert.setMessage(message)

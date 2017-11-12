@@ -30,7 +30,7 @@ public class Constants {
 
     public static void init(Context context)
     {
-        utl.Companion.init(ctx);
+//        utl.Companion.init(ctx);
         ctx=context;
         File file=new File(getFolder());
         if(!file.exists())

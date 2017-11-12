@@ -158,6 +158,7 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
 
         Constants.init(this)
+        utl.init(ctx)
 
         FirebaseApp.initializeApp(this)
 
@@ -168,7 +169,7 @@ class MainActivity : AppCompatActivity() {
 
 
 
-        utl.setShared(ctx)
+       // utl.setShared(ctx)
 
 
 
