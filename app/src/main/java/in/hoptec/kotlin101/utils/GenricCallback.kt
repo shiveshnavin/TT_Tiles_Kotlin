@@ -11,6 +11,7 @@ interface GenricCallback {
     fun onGameEnd(score2: Any)
     fun onDo(obj: Any, obj2: Any)
     fun onUpdate(score: Any)
+    fun onLife(score: Any)
 
     fun onRxn(reaction: Any)
 

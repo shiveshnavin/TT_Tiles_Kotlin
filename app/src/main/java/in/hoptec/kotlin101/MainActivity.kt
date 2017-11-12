@@ -12,8 +12,7 @@ import android.os.Bundle
 import android.support.v7.view.ContextThemeWrapper
 import android.support.v7.widget.LinearLayoutCompat
 import android.util.AttributeSet
-import android.view.Gravity
-import android.view.View
+import android.view.*
 import android.view.View.GONE
 import android.view.View.VISIBLE
 import android.widget.Button
@@ -24,6 +23,10 @@ import java.lang.Double.parseDouble
 import java.lang.Float.parseFloat
 import java.lang.Integer.parseInt
 import java.util.ArrayList
+import android.R.menu
+import android.view.MenuInflater
+
+
 
 class MainActivity : AppCompatActivity() {
 
@@ -42,6 +45,7 @@ class MainActivity : AppCompatActivity() {
     var LV2=100
     var LV3=175
     var LV4=250
+    var LIFE=3
 
 
     lateinit var ctx : Context
@@ -61,6 +65,7 @@ class MainActivity : AppCompatActivity() {
              LV2=20
              LV3=30
              LV4=40
+             LIFE=20
 
             false
 
@@ -110,16 +115,57 @@ class MainActivity : AppCompatActivity() {
     }
 
 
+    override fun onOptionsItemSelected(item: MenuItem?): Boolean {
+
+        when (item?.getItemId()) {
+
+            R.id.main_menu_log_in_id -> {
+                ShowLoginUI()
+                return true
+            }
+
+            R.id.main_menu_log_out_id -> {
+                ShowGoodbyeUI()
+                return true
+            }
+
+            R.id.main_menu_options_id -> {
+                ShowOptionsUI()
+                return true
+            }
+
+            R.id.main_menu_profile_id -> {
+                ShowProfileUI()
+                return true
+            }
+
+            else -> return super.onOptionsItemSelected(item)
+        }
+
+        return super.onOptionsItemSelected(item)
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+
+
+        val inflater = menuInflater
+        inflater.inflate(R.menu.main, menu)
+
+        return true
+
+    }
 
     var tile_list = ArrayList<Button>()
 
 
     var sqr=3
 
+    var MUSIC_STARTED=false
     fun addtiles()
     {
 
 
+        if(!MUSIC_STARTED)
         startMusic()
 
 
@@ -197,7 +243,16 @@ class MainActivity : AppCompatActivity() {
     {
         utl.l("Starting Game")
  val call_back = object : GenricCallback {
-           override fun onRxn(reaction: Any) {
+     override fun onLife(life: Any) {
+
+
+         //        YoYo.with(Techniques.Tada).duration(200).playOn(btn)
+
+
+
+     }
+
+     override fun onRxn(reaction: Any) {
 
                kotlin.setText("Your  Reflex : "+parseFloat(reaction.toString())/1000+"   s")
                rxn=rxn+parseFloat(reaction.toString())/1000
@@ -211,6 +266,7 @@ class MainActivity : AppCompatActivity() {
         }
 
         override fun onGameEnd(scor2: Any) {
+
 
             endMusic()
             laugh()
@@ -281,7 +337,8 @@ class MainActivity : AppCompatActivity() {
 
 
         game =Game(ctx,tile_list,call_back)
-        if(sqr>3)
+        game.life=LIFE
+         if(sqr>3)
         {
             game.score=score_i
         }
@@ -306,6 +363,8 @@ class MainActivity : AppCompatActivity() {
     fun startMusic()
     {
 
+
+        MUSIC_STARTED=true
         try {
 
 
@@ -328,7 +387,7 @@ class MainActivity : AppCompatActivity() {
     fun endMusic()
     {
 
-
+        MUSIC_STARTED=false
 
         try {
 

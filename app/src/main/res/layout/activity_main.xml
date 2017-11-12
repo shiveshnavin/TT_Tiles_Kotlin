@@ -8,8 +8,18 @@
     android:background="@color/red_400"
     tools:context="in.hoptec.kotlin101.MainActivity">
 
+
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="40dp">
+
+    </android.support.v7.widget.Toolbar>
+
+
     <com.daniribalbert.customfontlib.views.CustomFontTextView
         android:textSize="40sp"
+        android:layout_below="@+id/toolbar"
         android:gravity="center"
         android:textColor="@color/yellow_200"
         app:font="androidnation_b"

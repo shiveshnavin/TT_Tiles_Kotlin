@@ -15,6 +15,7 @@ import java.util.*
 class Game(internal var ctx:Context,internal var buttons: ArrayList<Button>,internal var callback:GenricCallback) {
 
 
+    var is_mode_free=true
     var lastrxn=System.currentTimeMillis()
     var currxn=System.currentTimeMillis()
     var score : Int =0
@@ -23,11 +24,11 @@ class Game(internal var ctx:Context,internal var buttons: ArrayList<Button>,inte
     val ENDED=13
     val PAUSED=14
     var STATE=ENDED
+    var life=3
 
     var duration:Long=1000
 
-    lateinit var run:Runnable
-    lateinit var h:Handler
+     lateinit var h:Handler
 
     fun disableall() {
 
@@ -66,6 +67,8 @@ class Game(internal var ctx:Context,internal var buttons: ArrayList<Button>,inte
     }
 
 
+
+    var clicked=false
     fun enable1(n: Int) {
 
         utl.l("Game enable1 "+n)
@@ -73,6 +76,22 @@ class Game(internal var ctx:Context,internal var buttons: ArrayList<Button>,inte
 
 
         val btn=buttons[n]
+        var clicked=false
+
+        btn.postDelayed( Runnable {
+
+
+            utl.l("NEXT ON RUN")
+            if(rerun&&!clicked)
+            {
+                next_fault()
+            }
+            //--score;
+            // next_fault()
+            //duration-=30
+            //  h.postDelayed(run,duration)
+
+        },duration)
 
 
         btn.setBackgroundResource(R.drawable.tile_bg_on)
@@ -80,6 +99,9 @@ class Game(internal var ctx:Context,internal var buttons: ArrayList<Button>,inte
         btn.setOnClickListener {
 
 
+
+
+            clicked=true
             lastrxn=currxn
             currxn=System.currentTimeMillis()
             var diff=currxn-lastrxn
@@ -94,7 +116,15 @@ class Game(internal var ctx:Context,internal var buttons: ArrayList<Button>,inte
 
     fun next()
     {
-        utl.l("Game Next " )
+
+
+        if(duration>600)
+         duration-=5
+
+        rerun=true
+       // h.postDelayed(run,duration)
+
+         utl.l("Game Next " )
 
 
         disableall()
@@ -104,19 +134,37 @@ class Game(internal var ctx:Context,internal var buttons: ArrayList<Button>,inte
 
     }
 
+
+    fun next_fault()
+    {
+
+        utl.l("Game Next_Fault " )
+
+        rerun=true
+
+        disableall()
+        enable1(ran())
+
+        if(--life<0)
+        {
+            end()
+        }
+        callback.onLife(life)
+
+
+    }
+
+
     fun start()
     {
 
 
+        life=3
+        duration=1000
         STATE=RUNNING
 
         h=Handler()
-        run= Runnable {
 
-            duration-=30
-          //  h.postDelayed(run,duration)
-
-        }
 
 
 
@@ -127,8 +175,12 @@ class Game(internal var ctx:Context,internal var buttons: ArrayList<Button>,inte
 
     }
 
+    var rerun=true
     fun end()
     {
+        rerun=false
+
+
         STATE=ENDED
 
 
