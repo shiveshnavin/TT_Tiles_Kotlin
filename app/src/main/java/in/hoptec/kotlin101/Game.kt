@@ -172,6 +172,8 @@ class Game(internal var ctx:Context,internal var buttons: ArrayList<Button>,inte
 
 
 
+        callback.onLife(3)
+
 
     }
 

@@ -119,25 +119,18 @@ class MainActivity : AppCompatActivity() {
 
         when (item?.getItemId()) {
 
-            R.id.main_menu_log_in_id -> {
-                ShowLoginUI()
+            R.id.setting -> {
+
+
                 return true
             }
 
-            R.id.main_menu_log_out_id -> {
-                ShowGoodbyeUI()
+            R.id.board -> {
+
+
                 return true
             }
 
-            R.id.main_menu_options_id -> {
-                ShowOptionsUI()
-                return true
-            }
-
-            R.id.main_menu_profile_id -> {
-                ShowProfileUI()
-                return true
-            }
 
             else -> return super.onOptionsItemSelected(item)
         }
@@ -243,9 +236,11 @@ class MainActivity : AppCompatActivity() {
     {
         utl.l("Starting Game")
  val call_back = object : GenricCallback {
-     override fun onLife(life: Any) {
+     override fun onLife(lie: Any) {
 
 
+
+         life.setText(lie?.toString())
          //        YoYo.with(Techniques.Tada).duration(200).playOn(btn)
 
 

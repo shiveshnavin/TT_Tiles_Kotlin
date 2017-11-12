@@ -1,10 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:android="http://schemas.android.com/apk/res/android">
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    >
 
     <item
 
-        android:title="Item" />
+        android:id="@+id/setting"
 
-    <item android:title="Item" />
+        app:showAsAction="always"
+        android:icon="@drawable/ic_settings_white_36dp"
+        android:title="Settings" />
+
+    <item
+        android:id="@+id/board"
+
+        app:showAsAction="always"
+        android:icon="@drawable/ic_stars_white_36dp"
+        android:title="Leatherboards" />
 </menu>

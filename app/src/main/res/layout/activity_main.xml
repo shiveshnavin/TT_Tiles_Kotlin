@@ -11,8 +11,39 @@
 
     <android.support.v7.widget.Toolbar
         android:id="@+id/toolbar"
+        android:layout_marginRight="5dp"
+
         android:layout_width="match_parent"
         android:layout_height="40dp">
+
+        <LinearLayout
+            android:orientation="horizontal"
+            android:gravity="left"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <ImageView
+                android:padding="7dp"
+                android:src="@drawable/ic_favorite_white_36dp"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent" />
+
+
+            <com.daniribalbert.customfontlib.views.CustomFontTextView
+
+                android:gravity="center"
+                android:textSize="23sp"
+                android:textColor="@color/white"
+                app:font="arcade"
+                android:layout_gravity="center"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="3"
+                android:id="@+id/life"   />
+
+
+        </LinearLayout>
+
 
     </android.support.v7.widget.Toolbar>
 
