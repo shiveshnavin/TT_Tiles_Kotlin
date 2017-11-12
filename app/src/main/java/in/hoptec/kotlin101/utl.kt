@@ -42,6 +42,10 @@ import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
 
+import com.google.gson.Gson
+import com.google.gson.JsonSyntaxException
+import com.wang.avi.AVLoadingIndicatorView
+
 import java.io.File
 import java.io.FileInputStream
 import java.io.FileOutputStream
@@ -60,8 +64,6 @@ import `in`.hoptec.kotlin101.utils.FileOperations
 import `in`.hoptec.kotlin101.utils.GenricCallback
 
 import android.content.Context.MODE_PRIVATE
-import java.lang.Float.parseFloat
-import java.lang.Integer.parseInt
 
 /**
  * Created by shivesh on 28/6/17.
@@ -72,9 +74,6 @@ class utl {
     private fun isValidMail(email: String): Boolean {
         return android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches()
     }
-
-
-
 
 
     private fun isAppIsInBackground(context: Context): Boolean {
@@ -120,18 +119,14 @@ class utl {
         var DISPLAY_ENABLED = true
         var DEBUG_ENABLED = true
 
+        var js = Gson()
 
-        var ctx : Context?=null
+      lateinit  var ctx: Context
 
         /** */
-        fun init( cx:Context?)
-        {
-
-            ctx=cx
-
+        fun init(ctxx: Context) {
+            ctx = ctxx
         }
-
-
 
 
         fun animate(app: View, property: String, initv: Int, finalv: Int, repeat: Boolean, dur: Int) {
@@ -169,6 +164,12 @@ class utl {
 
         }
 
+
+        fun getColor(@ColorRes c: Int): Int {
+            var col = 0
+            col = ctx.resources.getColor(c)
+            return col
+        }
 
 
         fun fullScreen(act: Activity) {
@@ -208,6 +209,7 @@ class utl {
 
 
         var CLAN_PRO_NORMAL = "ClanPro-Book.otf"
+        var RUBIK = "Rubik-Regular.ttf"
         var AVENIR_MED = "Avenir-Medium.ttf"
         var CAVIAR = "CaviarDreams.ttf"
         var ROBOTO_THIN = "Roboto-Thin.ttf"
@@ -355,8 +357,21 @@ class utl {
         }
 
 
+        fun logout() {
+
+            try {
+                removeUserData()
+
+            } catch (e: Exception) {
+                e.printStackTrace()
+            }
+
+        }
+
+
         fun getApkVerison(ctx: Context): Int {
             try {
+                val x: Int
                 val versionCode = BuildConfig.VERSION_CODE
                 val versionName = BuildConfig.VERSION_NAME
                 return versionCode
@@ -372,9 +387,10 @@ class utl {
         fun changeColorDrawable(imageView: ImageView, @ColorRes res: Int) {
 
             try {
-                DrawableCompat.setTint(imageView.drawable, ContextCompat.getColor(ctx, res))
+                DrawableCompat.setTint(imageView.drawable, ContextCompat.getColor(imageView.context, res))
             } catch (e: Exception) {
-                e.printStackTrace()
+                //  e.printStackTrace();
+                utl.l("Drawable TintErr 409")
             }
 
 
@@ -510,6 +526,26 @@ class utl {
         }
 
 
+        fun snack(act: Activity, t: String, a: String, cb: GenricCallback) {
+
+            val rootView = act.window.decorView.rootView
+
+            val snackbar = Snackbar.make(rootView, "" + t, Snackbar.LENGTH_LONG)
+            snackbar.setActionTextColor(act.resources.getColor(R.color.grey_100))
+            snackbar.setAction("" + a) { cb.onStart() }
+            val snackbarView = snackbar.view
+            snackbarView.setBackgroundColor(act.resources.getColor(R.color.red_300))
+
+            val snackbarTextId = android.support.design.R.id.snackbar_text
+            val textView = snackbarView.findViewById(snackbarTextId) as TextView
+            textView.setTextColor(Color.WHITE)
+
+            if (DISPLAY_ENABLED)
+                snackbar.show()
+
+        }
+
+
         fun snack(rootView: View, t: String, a: String, cb: GenricCallback) {
 
             val act = rootView.context
@@ -592,39 +628,206 @@ class utl {
         var TYPE_DEF: Int? = 101
 
 
-        var input: EditText? = null
+      lateinit  var input: EditText
 
+        fun inputDialog(ctx: Context, title: String, message: String, TYPE : Int?, callback: InputDialogCallback): AlertDialog {
+            val alert = AlertDialog.Builder(ContextThemeWrapper(ctx, R.style.MyAlertDialogStyle))
+            alert.setTitle(title)
+            alert.setMessage(message)
+
+
+            alert.setPositiveButton("Done", DialogInterface.OnClickListener { dialog, whichButton ->
+                val value = input.text.toString()
+                Log.d("", "Text Value : " + value)
+
+                callback.onDone(value)
+                return@OnClickListener
+            })
+            alert.setNegativeButton("Cancel",
+                    DialogInterface.OnClickListener { dialog, which -> return@OnClickListener })
+
+            val lfl = object : LayoutInflater(ctx) {
+                override fun cloneInContext(context: Context): LayoutInflater? {
+                    return null
+                }
+            }
+            val v = lfl.inflate(R.layout.input, null)
+            alert.setView(v)
+
+
+            val diag = alert.create()
+            diag.setCanceledOnTouchOutside(false)
+
+            input = v.findViewById(R.id.input) as EditText
+
+            if (TYPE == TYPE_EMAIL)
+                input.inputType = InputType.TYPE_TEXT_VARIATION_EMAIL_ADDRESS
+            if (TYPE == TYPE_PHONE)
+                input.inputType = InputType.TYPE_CLASS_PHONE
+            else
+                input.inputType = InputType.TYPE_CLASS_TEXT
+
+
+            diag.show()
+            return diag
+
+        }
+
+
+        fun getRealPathFromUri(uri: Uri?): String? {
+            var result: String? = null
+            try {
+                if (uri == null)
+                    return null
+
+                val documentID: String
+                if (Build.VERSION.SDK_INT < Build.VERSION_CODES.KITKAT) {
+                    val pathParts = uri.path.split("/".toRegex()).dropLastWhile { it.isEmpty() }.toTypedArray()
+                    documentID = pathParts[pathParts.size - 1]
+                } else {
+                    val pathSegments = uri.lastPathSegment.split(":".toRegex()).dropLastWhile { it.isEmpty() }.toTypedArray()
+                    documentID = pathSegments[pathSegments.size - 1]
+                }
+                val mediaPath = MediaStore.Images.Media.DATA
+
+                val imageCursor = ctx.contentResolver.query(uri, arrayOf(mediaPath), MediaStore.Images.Media._ID + "=" + documentID, null, null)
+                if (imageCursor!!.moveToFirst()) {
+                    result = imageCursor.getString(imageCursor.getColumnIndex(mediaPath))
+                }
+            } catch (e: Exception) {
+                e.printStackTrace()
+            }
+
+            if (result == null)
+                result = uri!!.path.replace("file://", "").replace("%20", " ")
+            utl.l("Found File path " + result)
+            return result
+        }
 
 
         val MY_PREFS_NAME = "wootwoot"
-        var editor: SharedPreferences.Editor? = null// = getSharedPreferences(MY_PREFS_NAME, MODE_PRIVATE).edit();
+       lateinit var editor: SharedPreferences.Editor// = getSharedPreferences(MY_PREFS_NAME, MODE_PRIVATE).edit();
+
+        fun setShared(ctx: Context) {
+            /*
+        editor.putString("name", "Elena");
+        editor.putInt("idName", 12);
+        editor.commit();*/
 
 
-        fun copyFile(src: File, dst: File) {
-            try {
+            val prefs = ctx.getSharedPreferences(MY_PREFS_NAME, MODE_PRIVATE)
+            val restoredText = prefs.getString("installed", null)
+            if (restoredText != null) {
 
-                if (!src.exists())
-                    return
-                val `in` = FileInputStream(src)
-                val os = FileOutputStream(dst)
+                val name = prefs.getString("installed", "true")
 
-                val buf = ByteArray(1024)
-                var len: Int = `in`.read(buf)
-                while ((len) > 0) {
-
-                    os.write(buf, 0, len)
-                    len= `in`.read(buf)
+                Log.d("INSTALL ", " ALREADY INSTALL ")
+            } else {
+                Log.d("INSTALL ", " FIRST INSTALL ")
+                val folder = File(Constants.getFolder())
+                if (folder.exists()) {
+                    utl.log("INSTALL : Deleting folder")
+                    utl.deleteDir(folder)
                 }
-                `in`.close()
-                os.close()
+                editor = ctx.getSharedPreferences(MY_PREFS_NAME, MODE_PRIVATE).edit()
+                editor.putString("installed", "true")
 
-            } catch (e: Exception) {
-                e.printStackTrace()
+                editor.commit()
+            }
+
+        }
+
+
+
+        fun writeData(text: String): Boolean {
+            val data = Constants.localDataFile()
+            val fop = FileOperations()
+            val g = Gson()
+            fop.write(data, text)
+            Log.d("DATA WROTE", "" + fop.read(data)!!)
+            return true
+        }
+
+
+        fun readData(): String? {
+            val data = Constants.localDataFile()
+            if (!File(data).exists())
+                return null
+            val fop = FileOperations()
+
+            Log.d("DATA READ", "" + fop.read(data)!!)
+            return fop.read(data)
+
+
+        }
+
+
+        fun writeFile(file: String, text: String): Boolean {
+
+            val data = Constants.folder + "/" + file
+            val fop = FileOperations()
+            val g = Gson()
+            fop.write(data, text)
+            Log.d("DATA WROTE", "" + fop.read(data)!!)
+            return true
+        }
+
+
+        fun readFile(file: String): String? {
+            val data = Constants.folder + "/" + file
+            if (!File(data).exists())
+                return null
+            val fop = FileOperations()
+
+            Log.d("DATA READ", "" + fop.read(data)!!)
+            return fop.read(data)
+
+
+        }
+
+        fun clearCache() {
+
+            val cache = File(Constants.getFolder())
+            for (f in cache.listFiles()) {
+
+                f.delete()
+
+            }
+
+
+            val folder = File(Constants.getFolder())
+            for (f in folder.listFiles()) {
+                if (f.name.contains(".mp4") || f.name.contains(".png")) {
+                    f.delete()
+                }
             }
 
 
         }
 
+
+        fun removeData(): Boolean {
+            val data = Constants.localDataFile()
+            val f = File(data)
+            f.delete()
+            return true
+        }
+
+        fun removeUserData(): Boolean {
+            val data = Constants.userDataFile()
+            val f = File(data)
+            f.delete()
+            return true
+        }
+
+        fun writeUserData(guser: GenricUser, ctx: Context): Boolean {
+            val data = Constants.userDataFile()
+            val fop = FileOperations()
+            val g = Gson()
+            fop.write(data, g.toJson(guser))
+            Log.d("DATA WROTE", "" + fop.read(data)!!)
+            return true
+        }
 
         fun deleteDir(dir: File): Boolean {
             if (dir.isDirectory) {
@@ -648,6 +851,76 @@ class utl {
             val ret = uuid.substring(0, Math.min(uuid.length, l))
             println("uuid $l = $ret")
             return ret
+        }
+
+
+        fun readUserData(): GenricUser? {
+            val data = Constants.userDataFile()
+            if (!File(data).exists())
+                return null
+            val fop = FileOperations()
+            val g = Gson()
+            try {
+                Log.d("DATA READ", "")
+                //Log.d("DATA READ",""+fop.read(data));
+                val guser = g.fromJson(fop.read(data), GenricUser::class.java)
+                return guser
+
+
+            } catch (e: JsonSyntaxException) {
+
+                e.printStackTrace()
+
+                return null
+            }
+
+        }
+
+
+        var dialog: Dialog? = null
+        fun showDig(show: Boolean, ctx: Context) {
+            try {
+                if (dialog != null)
+                    if (dialog!!.isShowing && show) {
+                        return
+                    }
+                if (show) {
+
+                    utl.log("DIAG_OPEN : " + ctx.javaClass)
+                    dialog = Dialog(ctx)
+                    dialog!!.requestWindowFeature(Window.FEATURE_NO_TITLE)
+                    dialog!!.setContentView(R.layout.gen_load)
+                    val window = dialog!!.window
+                    window!!.setLayout(WindowManager.LayoutParams.MATCH_PARENT, WindowManager.LayoutParams.MATCH_PARENT)
+                    window.clearFlags(WindowManager.LayoutParams.FLAG_DIM_BEHIND)
+                    window.setBackgroundDrawable(ColorDrawable(Color.GRAY))
+                    dialog!!.window!!.attributes.alpha = 0.7f
+
+
+                    dialog!!.setContentView(R.layout.gen_load)
+                    //  dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+                    dialog!!.setCanceledOnTouchOutside(true)
+                    dialog!!.setCancelable(true)
+
+                    dialog!!.show()
+                    val splashView = dialog!!.findViewById(R.id.splash_view2) as AVLoadingIndicatorView
+                    splashView.show()
+
+
+                } else {
+
+
+                    utl.log("DIAG_CLOSE: " + ctx.javaClass)
+                    if (dialog != null)
+                        if (dialog!!.isShowing) {
+                            dialog!!.dismiss()
+                        }
+
+                }
+            } catch (e: Exception) {
+                e.printStackTrace()
+            }
+
         }
 
 

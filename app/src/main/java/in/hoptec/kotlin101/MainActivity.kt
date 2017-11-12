@@ -1,6 +1,7 @@
 package `in`.hoptec.kotlin101
 
 import `in`.hoptec.kotlin101.utils.GenricCallback
+import `in`.hoptec.kotlin101.utl.Companion.TYPE_DEF
 import android.app.Activity
 import android.content.Context
 import android.media.AudioManager
@@ -25,10 +26,19 @@ import java.lang.Integer.parseInt
 import java.util.ArrayList
 import android.R.menu
 import android.view.MenuInflater
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.FirebaseUser
+import android.widget.Toast
 
+import com.google.firebase.auth.AuthResult
+import com.google.android.gms.tasks.Task
+import android.support.annotation.NonNull
+import com.google.android.gms.tasks.OnCompleteListener
+import com.google.firebase.analytics.FirebaseAnalytics
 
 
 class MainActivity : AppCompatActivity() {
+
 
 
 
@@ -48,9 +58,96 @@ class MainActivity : AppCompatActivity() {
     var LIFE=3
 
 
+
+     var curuser : FirebaseUser? =null
+
+    lateinit var mFirebaseAnalytics : FirebaseAnalytics;
+
+
+
     lateinit var ctx : Context
     lateinit var act : Activity
     var rxn =0f
+
+    public override fun onStart() {
+        super.onStart()
+        // Check if user is signed in (non-null) and update UI accordingly.
+        val currentUser = mAuth.getCurrentUser()
+
+        if(currentUser!=null)
+        {
+            curuser=currentUser
+
+
+
+            if(currentUser.displayName==null)
+            {
+
+
+
+                 var cb: utl.InputDialogCallback = object : utl.InputDialogCallback {
+                    override fun onDone(text: String) {
+
+                        currentUser.updateEmail(utl.refineString(text,"_")+"@taptap.com");
+
+
+                    }
+                }
+
+
+                utl.inputDialog(ctx,"Enter Your Name","",TYPE_DEF,cb);
+
+
+
+            }
+        }
+        else
+        {
+            utl.showDig(true,ctx)
+            mAuth.signInAnonymously()
+                    .addOnCompleteListener(this) { task ->
+                        utl.showDig(false,ctx)
+
+
+
+                        if (task.isSuccessful) {
+                            // Sign in success, update UI with the signed-in user's information
+                           utl.l( "signInAnonymously:success")
+                            val user = mAuth.currentUser
+
+                            curuser=user
+
+
+                            var cb: utl.InputDialogCallback = object : utl.InputDialogCallback {
+                                override fun onDone(text: String) {
+
+                                    user?.updateEmail(utl.refineString(text,"_")+"@taptap.com");
+
+
+                                }
+                            }
+
+
+                            utl.inputDialog(ctx,"Enter Your Name","",TYPE_DEF,cb);
+
+
+
+
+
+                        } else {
+                            // If sign in fails, display a message to the user.
+                            utl.l( "signInAnonymously:failure" )
+
+
+                        }
+
+                        // ...
+                    }
+        }
+
+    }
+
+    lateinit var mAuth :  FirebaseAuth
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -58,6 +155,20 @@ class MainActivity : AppCompatActivity() {
         ctx=this
         act=this
         setContentView(R.layout.activity_main)
+
+
+
+        mAuth= FirebaseAuth.getInstance();
+
+
+        mFirebaseAnalytics = FirebaseAnalytics.getInstance(this);
+
+
+
+        utl.setShared(ctx)
+
+
+
 
         setSupportActionBar(toolbar)
 
@@ -124,11 +235,15 @@ class MainActivity : AppCompatActivity() {
             R.id.setting -> {
 
 
+
+                utl.snack(act,"Settings coming soon !")
+
                 return true
             }
 
             R.id.board -> {
 
+                utl.snack(act,"Leatherboards coming soon !")
 
                 return true
             }
@@ -285,10 +400,23 @@ class MainActivity : AppCompatActivity() {
             //finals.setText("Score : "+scor2.toString()+"\nAvg.  Reflex : "+roundoff(rxn/ (parseInt(scor2.toString())+1),3)+"  s")
 
             var sco:Float= parseFloat(scor2.toString())
-            scor=(1.0f-roundoff(avg,3))*(sco)*100.0f
+           var scorz=(1.0f-roundoff(avg,3))*(sco)*10.0f
+
+            scor= scorz.toInt()
 //          finals.setText("Score : "+scor2.toString()+"\nAvg.  Reflex : "+roundoff(avg,3)+"  s")
 
             finals.setText("Score : "+scor+"\nAvg.  Reflex : "+roundoff(avg,3)+"  s")
+
+
+            val bundle = Bundle()
+            bundle.putString(FirebaseAnalytics.Param.ITEM_ID, curuser?.uid)
+            bundle.putString(FirebaseAnalytics.Param.ITEM_NAME,  curuser?.email)
+            bundle.putString(FirebaseAnalytics.Param.CONTENT_TYPE, "score")
+            bundle.putString(FirebaseAnalytics.Param.CONTENT, "Score : "+scor+"\nAvg.  Reflex : "+roundoff(avg,3)+"  s")
+
+
+            mFirebaseAnalytics.logEvent(FirebaseAnalytics.Event.SELECT_CONTENT, bundle)
+
 
 
 
@@ -296,7 +424,7 @@ class MainActivity : AppCompatActivity() {
 
 
 
-     var scor : Float= 0.0f
+     var scor : Int= 0
         override fun onDo(obj: Any, obj2: Any) {
 
         }
@@ -305,7 +433,7 @@ class MainActivity : AppCompatActivity() {
 
             hit()
 
-            score.setText("Score : "+scor.toString())
+            score.setText("Hits : "+scor.toString())
             score_i=parseInt(scor.toString())
 
             if(score_i==LV1) {
@@ -334,7 +462,6 @@ class MainActivity : AppCompatActivity() {
 
             }
         }
-
 
 
     }
