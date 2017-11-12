@@ -34,6 +34,7 @@ import com.google.firebase.auth.AuthResult
 import com.google.android.gms.tasks.Task
 import android.support.annotation.NonNull
 import com.google.android.gms.tasks.OnCompleteListener
+import com.google.firebase.FirebaseApp
 import com.google.firebase.analytics.FirebaseAnalytics
 
 
@@ -157,6 +158,7 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
 
 
+        FirebaseApp.initializeApp(this)
 
         mAuth= FirebaseAuth.getInstance();
 
