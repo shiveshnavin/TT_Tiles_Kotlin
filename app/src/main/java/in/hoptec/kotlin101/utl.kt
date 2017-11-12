@@ -739,6 +739,48 @@ class utl {
 
 
 
+        fun setKey(key:String,valu:String,ctx: Context) {
+            /*
+        editor.putString("name", "Elena");
+        editor.putInt("idName", 12);
+        editor.commit();*/
+
+
+            val prefs = ctx.getSharedPreferences(MY_PREFS_NAME, MODE_PRIVATE)
+
+
+                editor = ctx.getSharedPreferences(MY_PREFS_NAME, MODE_PRIVATE).edit()
+                editor.putString(key,valu)
+
+            utl.l("SET : "+key,valu)
+                editor.commit()
+
+
+        }
+
+
+        fun getKey(key:String,ctx: Context) :String{
+            /*
+        editor.putString("name", "Elena");
+        editor.putInt("idName", 12);
+        editor.commit();*/
+
+
+            val prefs = ctx.getSharedPreferences(MY_PREFS_NAME, MODE_PRIVATE)
+            val restoredText = prefs.getString(key, null)
+
+
+            return restoredText
+
+
+
+
+        }
+
+
+
+
+
         fun writeData(text: String): Boolean {
             val data = Constants.localDataFile()
             val fop = FileOperations()

@@ -81,14 +81,29 @@ class MainActivity : AppCompatActivity() {
 
 
 
+            utl.l("Current user : "+curuser?.displayName)
+
             if(currentUser.displayName==null)
             {
+
+
+
+
+                if(utl.getKey("user",ctx)!=null)
+                {
+                    currentUser.updateEmail(utl.refineString(utl.getKey("user",ctx),"_")+"@taptap.com");
+
+                }
+                else{
+
 
 
 
                  var cb: utl.InputDialogCallback = object : utl.InputDialogCallback {
                     override fun onDone(text: String) {
 
+
+                        utl.setKey("user",text,ctx)
                         currentUser.updateEmail(utl.refineString(text,"_")+"@taptap.com");
 
 
@@ -98,7 +113,7 @@ class MainActivity : AppCompatActivity() {
 
                 utl.inputDialog(ctx,"Enter Your Name","",TYPE_DEF,cb);
 
-
+                }
 
             }
         }
@@ -124,6 +139,8 @@ class MainActivity : AppCompatActivity() {
 
                                     user?.updateEmail(utl.refineString(text,"_")+"@taptap.com");
 
+
+                                    utl.setKey("user",text,ctx)
 
                                 }
                             }
@@ -360,6 +377,8 @@ class MainActivity : AppCompatActivity() {
      override fun onLife(lie: Any) {
 
 
+
+         playSound(3)
 
 
          life.setText(lie?.toString())
@@ -613,11 +632,12 @@ class MainActivity : AppCompatActivity() {
                 soundPool = SoundPool(maxStreams, AudioManager.STREAM_MUSIC, 0)
             }
 
-            sm = IntArray(3)
+            sm = IntArray(4)
             // fill your sounds
             sm[0] = soundPool!!.load(mContext, R.raw.razor_l, 1)
             sm[1] = soundPool!!.load(mContext, R.raw.tap_h, 1)
             sm[2] = soundPool!!.load(mContext, R.raw.moo, 1)
+            sm[3] = soundPool!!.load(mContext, R.raw.beep9, 1)
 
             amg = mContext.getSystemService(Context.AUDIO_SERVICE) as AudioManager
         }
