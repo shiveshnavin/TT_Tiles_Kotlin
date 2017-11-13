@@ -304,14 +304,19 @@ class MainActivity : AppCompatActivity() {
         tiles.visibility=VISIBLE
         gameover.visibility= GONE
 
-        if(tile_list.size>=0)
+         if(tile_list.size>=0)
         {
             var i=0
 
             while(i<tile_list.size)
             {
+                utl.l(" NEXT I TAG WAS: "+tile_list.get(i).tag)
                 tile_list.get(i).tag="OFF"
+                utl.l(" NEXT I TAG NOW : "+tile_list.get(i).tag)
+
+                i++
             }
+
         }
 
 
@@ -372,7 +377,10 @@ class MainActivity : AppCompatActivity() {
             while(i<tile_list.size)
             {
                 tile_list.get(i).tag="ON"
+                utl.l(" NEXT I TAG IS: "+tile_list.get(i).tag)
+                i++
             }
+
         }
 
         tile_list[0].setBackgroundResource(R.drawable.tile_bg_on)
