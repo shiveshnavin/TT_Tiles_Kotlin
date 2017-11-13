@@ -224,7 +224,7 @@ class MainActivity : AppCompatActivity() {
                     utl.diag(ctx,"Update Required !","Something awesome has been added . Feel IT ! update NOW !",false,"UPDATE",cb)
                 }
 
-                if(response.contains("finish"))
+                if(response.contains("notcool"))
                 {
 
                     utl.toast(ctx,"Not Authorized ! QUITTING !!")
