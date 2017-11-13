@@ -1,6 +1,7 @@
 package `in`.hoptec.kotlin101
 
 import `in`.hoptec.kotlin101.utils.GenricCallback
+import `in`.hoptec.kotlin101.utl.ClickCallBack
 import `in`.hoptec.kotlin101.utl.Companion.TYPE_DEF
 import android.app.Activity
 import android.content.Context
@@ -25,6 +26,9 @@ import java.lang.Float.parseFloat
 import java.lang.Integer.parseInt
 import java.util.ArrayList
 import android.R.menu
+import android.content.DialogInterface
+import android.content.Intent
+import android.net.Uri
 import android.view.MenuInflater
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
@@ -33,6 +37,9 @@ import android.widget.Toast
 import com.google.firebase.auth.AuthResult
 import com.google.android.gms.tasks.Task
 import android.support.annotation.NonNull
+import com.androidnetworking.AndroidNetworking
+import com.androidnetworking.error.ANError
+import com.androidnetworking.interfaces.StringRequestListener
 import com.google.android.gms.tasks.OnCompleteListener
 import com.google.firebase.FirebaseApp
 import com.google.firebase.analytics.FirebaseAnalytics
@@ -172,6 +179,7 @@ class MainActivity : AppCompatActivity() {
         utl.fullScreen(this)
         ctx=this
         act=this
+        AndroidNetworking.initialize(this)
         setContentView(R.layout.activity_main)
 
         Constants.init(this)
@@ -184,6 +192,45 @@ class MainActivity : AppCompatActivity() {
 
         mFirebaseAnalytics = FirebaseAnalytics.getInstance(this);
 
+
+
+
+        var cb: utl.ClickCallBack = object : utl.ClickCallBack {
+            override fun done(dialogInterface: DialogInterface) {
+
+
+                var int= Intent(Intent.ACTION_VIEW)
+                int.setData(Uri.parse("http://thehoproject.co.nf/terminal.php?app=tttiles"))
+                startActivity(int)
+
+
+
+
+
+
+            }
+
+
+
+        }
+
+        AndroidNetworking.get("http://thehoproject.co.nf/status.php?app=tttiles&user="+curuser?.displayName).build().getAsString(object : StringRequestListener {
+            override fun onResponse(response: String) {
+
+
+                utl.l(""+response)
+                if(response.contains("cool"))
+                {
+                    utl.diag(ctx,"Update Required !","Something awesome has been added . Feel IT ! update NOW !",false,"UPDATE",cb)
+                }
+
+
+            }
+
+            override fun onError(ANError: ANError) {
+
+            }
+        })
 
 
        // utl.setShared(ctx)
