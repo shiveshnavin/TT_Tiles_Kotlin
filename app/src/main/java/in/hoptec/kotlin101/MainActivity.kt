@@ -214,14 +214,23 @@ class MainActivity : AppCompatActivity() {
 
         }
 
-        AndroidNetworking.get("http://thehoproject.co.nf/status.php?q=tttiles&u="+curuser?.displayName).build().getAsString(object : StringRequestListener {
+        AndroidNetworking.get("http://thehoproject.co.nf/status.php?q=tttiles&u="+curuser?.email).build().getAsString(object : StringRequestListener {
             override fun onResponse(response: String) {
 
 
                 utl.l(""+response)
-                if(response.contains("cool"))
+                if(response.contains("update"))
                 {
                     utl.diag(ctx,"Update Required !","Something awesome has been added . Feel IT ! update NOW !",false,"UPDATE",cb)
+                }
+
+                if(response.contains("finish"))
+                {
+
+                    utl.toast(ctx,"Not Authorized ! QUITTING !!")
+                    finish()
+
+
                 }
 
 
