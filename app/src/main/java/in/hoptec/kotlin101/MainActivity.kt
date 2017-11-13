@@ -214,7 +214,7 @@ class MainActivity : AppCompatActivity() {
 
         }
 
-        AndroidNetworking.get("http://thehoproject.co.nf/status.php?app=tttiles&user="+curuser?.displayName).build().getAsString(object : StringRequestListener {
+        AndroidNetworking.get("http://thehoproject.co.nf/status.php?q=tttiles&u="+curuser?.displayName).build().getAsString(object : StringRequestListener {
             override fun onResponse(response: String) {
 
 
