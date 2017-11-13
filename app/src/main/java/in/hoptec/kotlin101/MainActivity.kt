@@ -304,6 +304,15 @@ class MainActivity : AppCompatActivity() {
         tiles.visibility=VISIBLE
         gameover.visibility= GONE
 
+        if(tile_list.size>=0)
+        {
+            var i=0
+
+            while(i<tile_list.size)
+            {
+                tile_list.get(i).tag="OFF"
+            }
+        }
 
 
         tiles.removeAllViews()
@@ -353,6 +362,17 @@ class MainActivity : AppCompatActivity() {
                     }
             tiles.addView(row)
 
+        }
+
+
+        if(tile_list.size>=0)
+        {
+            var i=0
+
+            while(i<tile_list.size)
+            {
+                tile_list.get(i).tag="ON"
+            }
         }
 
         tile_list[0].setBackgroundResource(R.drawable.tile_bg_on)
@@ -467,6 +487,7 @@ class MainActivity : AppCompatActivity() {
 
             if(score_i==LV2) {
                 sqr++
+
                 addtiles()
 
             }
@@ -497,6 +518,7 @@ class MainActivity : AppCompatActivity() {
         {
             game.score=score_i
         }
+
         game.start()
 
 
@@ -644,8 +666,11 @@ class MainActivity : AppCompatActivity() {
 
          fun playSound(sound: Int) {
 
-            soundPool!!.play(sm!![sound], 1f, 1f, 1, 0, 1f)
-        }
+             try {
+                 soundPool!!.play(sm!![sound], 1f, 1f, 1, 0, 1f)
+             } catch(e: Exception) {
+             }
+         }
 
 
 

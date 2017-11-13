@@ -3,6 +3,7 @@ package `in`.hoptec.kotlin101
 import `in`.hoptec.kotlin101.utils.GenricCallback
 import android.content.Context
 import android.os.Handler
+import android.view.View
 import android.widget.Button
 import com.daimajia.androidanimations.library.Techniques
 import com.daimajia.androidanimations.library.YoYo
@@ -25,6 +26,7 @@ class Game(internal var ctx:Context,internal var buttons: ArrayList<Button>,inte
     val PAUSED=14
     var STATE=ENDED
     var life=3
+    var clicked_m=false
 
     var duration:Long=1000
 
@@ -76,17 +78,19 @@ class Game(internal var ctx:Context,internal var buttons: ArrayList<Button>,inte
 
 
         val btn=buttons[n]
-        var clicked=false
+         var clicked=false
 
         if(!is_mode_free)
         btn.postDelayed( Runnable {
 
 
             utl.l("NEXT ON RUN")
-            if(rerun&&!clicked)
+
+            if(rerun&&!clicked&&btn.tag.equals("ON"))
             {
                 next_fault()
             }
+            clicked=true
             //--score;
             // next_fault()
             //duration-=30
@@ -118,16 +122,13 @@ class Game(internal var ctx:Context,internal var buttons: ArrayList<Button>,inte
     fun next()
     {
 
-
         if(duration>600)
          duration-=5
 
         rerun=true
        // h.postDelayed(run,duration)
 
-         utl.l("Game Next " )
-
-
+        utl.l("Game Next " )
         disableall()
         enable1(ran())
 
