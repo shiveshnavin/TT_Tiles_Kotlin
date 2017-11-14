@@ -457,11 +457,12 @@ class MainActivity : AppCompatActivity() {
     fun startGame()
     {
         utl.l("Starting Game")
- val call_back = object : GenricCallback {
+        val call_back = object : GenricCallback {
      override fun onLife(lie: Any) {
 
 
 
+         LIFE=lie.toString().toInt()
          playSound(3)
 
 
@@ -488,6 +489,7 @@ class MainActivity : AppCompatActivity() {
         override fun onGameEnd(scor2: Any) {
 
 
+            LIFE=3
             endMusic()
             laugh()
             score.setText("Score : "+scor2.toString())
@@ -516,13 +518,13 @@ class MainActivity : AppCompatActivity() {
 
 
             val bundle = Bundle()
-            bundle.putString(FirebaseAnalytics.Param.ITEM_ID, curuser?.uid)
-            bundle.putString(FirebaseAnalytics.Param.ITEM_NAME,  curuser?.email)
-            bundle.putString(FirebaseAnalytics.Param.CONTENT_TYPE, "score")
-            bundle.putString(FirebaseAnalytics.Param.CONTENT, "Score : "+scor+"\nAvg.  Reflex : "+roundoff(avg,3)+"  s")
+            bundle.putString("user_id", curuser?.uid)
+            bundle.putString("user_name",  curuser?.email)
+            bundle.putString("type", "score")
+            bundle.putString("score", "Score : "+scor+"\nAvg.  Reflex : "+roundoff(avg,3)+"  s")
 
 
-            mFirebaseAnalytics.logEvent(FirebaseAnalytics.Event.SELECT_CONTENT, bundle)
+            mFirebaseAnalytics.logEvent("game_session", bundle)
 
 
 

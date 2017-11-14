@@ -945,8 +945,8 @@ class utl {
                     dialog!!.setCancelable(true)
 
                     dialog!!.show()
-                    val splashView = dialog!!.findViewById(R.id.splash_view2) as AVLoadingIndicatorView
-                    splashView.show()
+                  //  val splashView = dialog!!.findViewById(R.id.splash_view2) as AVLoadingIndicatorView
+                   // splashView.show()
 
 
                 } else {

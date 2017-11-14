@@ -19,7 +19,7 @@
         android:layout_height="wrap_content"
          />
 
-
+z
 
     <com.wang.avi.AVLoadingIndicatorView
         android:id="@+id/splash_view2"

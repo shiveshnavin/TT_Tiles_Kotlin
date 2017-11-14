@@ -162,7 +162,7 @@ class Game(internal var ctx:Context,internal var buttons: ArrayList<Button>,inte
     {
 
 
-        life=3
+        //life=3
         duration=1000
         STATE=RUNNING
 
