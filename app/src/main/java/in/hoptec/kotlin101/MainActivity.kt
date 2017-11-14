@@ -518,13 +518,13 @@ class MainActivity : AppCompatActivity() {
 
 
             val bundle = Bundle()
-            bundle.putString("user_id", curuser?.uid)
-            bundle.putString("user_name",  curuser?.email)
-            bundle.putString("type", "score")
-            bundle.putString("score", "Score : "+scor+"\nAvg.  Reflex : "+roundoff(avg,3)+"  s")
+            bundle.putString(FirebaseAnalytics.Param.ITEM_ID, curuser?.uid)
+            bundle.putString(FirebaseAnalytics.Param.ITEM_NAME,  curuser?.email)
+            bundle.putString(FirebaseAnalytics.Param.CONTENT_TYPE, "score")
+            bundle.putString(FirebaseAnalytics.Param.CONTENT, "Score : "+scor+"\nAvg.  Reflex : "+roundoff(avg,3)+"  s")
 
 
-            mFirebaseAnalytics.logEvent("game_session", bundle)
+            mFirebaseAnalytics.logEvent(FirebaseAnalytics.Event.SELECT_CONTENT, bundle)
 
 
 
