@@ -122,8 +122,8 @@ class Game(internal var ctx:Context,internal var buttons: ArrayList<Button>,inte
     fun next()
     {
 
-        if(duration>600)
-         duration-=5
+        if(duration>500)
+         duration-=4
 
         rerun=true
        // h.postDelayed(run,duration)

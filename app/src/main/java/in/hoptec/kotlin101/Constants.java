@@ -39,11 +39,11 @@ public class Constants {
         }
     }
 
-    private static String FIRE_BASE="https://test-a0930.firebaseio.com/";
+    private static String FIRE_BASE="https://comify-144717.firebaseio.com/";
 
     public static String fireURL()
     {
-        return Constants.FIRE_BASE+ utl.Companion.refineString(ctx.getResources().getString(R.string.app_name),"");
+        return Constants.FIRE_BASE;//+ utl.Companion.refineString(ctx.getResources().getString(R.string.app_name),"");
     }
 
 

@@ -1,7 +1,6 @@
 package `in`.hoptec.kotlin101
 
 import `in`.hoptec.kotlin101.utils.GenricCallback
-import `in`.hoptec.kotlin101.utl.ClickCallBack
 import `in`.hoptec.kotlin101.utl.Companion.TYPE_DEF
 import android.app.Activity
 import android.content.Context
@@ -12,8 +11,6 @@ import android.os.Build
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.support.v7.view.ContextThemeWrapper
-import android.support.v7.widget.LinearLayoutCompat
-import android.util.AttributeSet
 import android.view.*
 import android.view.View.GONE
 import android.view.View.VISIBLE
@@ -25,24 +22,19 @@ import java.lang.Double.parseDouble
 import java.lang.Float.parseFloat
 import java.lang.Integer.parseInt
 import java.util.ArrayList
-import android.R.menu
 import android.content.DialogInterface
 import android.content.Intent
 import android.net.Uri
-import android.view.MenuInflater
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
-import android.widget.Toast
 
-import com.google.firebase.auth.AuthResult
-import com.google.android.gms.tasks.Task
-import android.support.annotation.NonNull
 import com.androidnetworking.AndroidNetworking
 import com.androidnetworking.error.ANError
 import com.androidnetworking.interfaces.StringRequestListener
-import com.google.android.gms.tasks.OnCompleteListener
 import com.google.firebase.FirebaseApp
 import com.google.firebase.analytics.FirebaseAnalytics
+import com.google.firebase.database.DatabaseReference
+import com.google.firebase.database.FirebaseDatabase
 
 
 class MainActivity : AppCompatActivity() {
@@ -67,10 +59,10 @@ class MainActivity : AppCompatActivity() {
 
 
 
-     var curuser : FirebaseUser? =null
+    var curuser : FirebaseUser? =null
 
     lateinit var mFirebaseAnalytics : FirebaseAnalytics;
-
+    lateinit var firebaseDatabase: DatabaseReference
 
 
     lateinit var ctx : Context
@@ -81,6 +73,8 @@ class MainActivity : AppCompatActivity() {
         super.onStart()
         // Check if user is signed in (non-null) and update UI accordingly.
         val currentUser = mAuth.getCurrentUser()
+
+        firebaseDatabase = FirebaseDatabase.getInstance(Constants.fireURL()).getReference("TapTapTiles")
 
         if(currentUser!=null)
         {
@@ -320,7 +314,10 @@ class MainActivity : AppCompatActivity() {
 
             R.id.board -> {
 
-                utl.snack(act,"Leatherboards coming soon !")
+                var int:Intent=Intent(ctx,LeatherBoard::class.java)
+                startActivity(int)
+
+               // utl.snack(act,"Leatherboards coming soon !")
 
                 return true
             }
@@ -343,8 +340,6 @@ class MainActivity : AppCompatActivity() {
     }
 
     var tile_list = ArrayList<Button>()
-
-
     var sqr=3
 
     var MUSIC_STARTED=false
@@ -525,6 +520,16 @@ class MainActivity : AppCompatActivity() {
 
 
             mFirebaseAnalytics.logEvent(FirebaseAnalytics.Event.SELECT_CONTENT, bundle)
+
+
+            var scr:Score= Score()
+            scr.dateTime=utl.date
+            scr.fireId=curuser?.uid
+            scr.name=curuser?.email?.replace("@taptap.com","")?.replace("_"," ")
+            scr.score=scor
+            scr.reflex=roundoff(avg,3)
+
+            firebaseDatabase.child("scores").push().setValue(scr)
 
 
 
@@ -738,6 +743,11 @@ class MainActivity : AppCompatActivity() {
              }
          }
 
-
-
+    override fun onPause() {
+        try {
+            game?.pause()
+        } catch(e: Exception) {
+        }
+        super.onPause()
+    }
 }
