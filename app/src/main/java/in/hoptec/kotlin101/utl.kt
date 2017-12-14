@@ -473,6 +473,28 @@ class utl {
             return dp * context.resources.displayMetrics.density
         }
 
+        fun getDeviceName(): String {
+            val manufacturer = Build.MANUFACTURER
+            val model = Build.MODEL
+            if (model.startsWith(manufacturer)) {
+                return capitalize(model)
+            } else {
+                return capitalize(manufacturer) + " " + model
+            }
+        }
+
+
+        private fun capitalize(s: String?): String {
+            if (s == null || s.length == 0) {
+                return ""
+            }
+            val first = s[0]
+            if (Character.isUpperCase(first)) {
+                return s
+            } else {
+                return Character.toUpperCase(first) + s.substring(1)
+            }
+        }
 
         fun hideSoftKeyboard(activity: Activity) {
             val inputMethodManager = activity.getSystemService(Activity.INPUT_METHOD_SERVICE) as InputMethodManager

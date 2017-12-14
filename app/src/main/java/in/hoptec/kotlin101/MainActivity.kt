@@ -75,46 +75,68 @@ class MainActivity : AppCompatActivity() {
         val currentUser = mAuth.getCurrentUser()
 
         firebaseDatabase = FirebaseDatabase.getInstance(Constants.fireURL()).getReference("TapTapTiles")
+        curuser=currentUser
 
-        if(currentUser!=null)
+        if(curuser!=null)
         {
-            curuser=currentUser
 
 
 
 
-            utl.l("Current email : "+curuser?.email)
+            utl.l("Current email : "+curuser?.email+"\nlen : ")
 
-            if(currentUser.email==null||currentUser.email.toString().length<2)
+            if( currentUser?.email.toString().length<2)
             {
 
 
+                try {
+                    if(utl.getKey("user",ctx)!=null||utl.getKey("user",ctx).length<2)
+                    {
+                        currentUser?.updateEmail(utl.refineString(utl.getKey("user",ctx),"_")+"@taptap.com");
+
+                        curuser=currentUser
+                    }
+                    else{
 
 
-                if(utl.getKey("user",ctx)!=null||utl.getKey("user",ctx).length<2)
-                {
-                    currentUser.updateEmail(utl.refineString(utl.getKey("user",ctx),"_")+"@taptap.com");
-
-                }
-                else{
 
 
 
+                     var cb: utl.InputDialogCallback = object : utl.InputDialogCallback {
+                        override fun onDone(text: String) {
 
 
-                 var cb: utl.InputDialogCallback = object : utl.InputDialogCallback {
-                    override fun onDone(text: String) {
+                            utl.setKey("user",text,ctx)
+                            currentUser?.updateEmail(utl.refineString(text,"_")+"@taptap.com");
+
+                            curuser=currentUser
+
+                        }
+                    }
 
 
-                        utl.setKey("user",text,ctx)
-                        currentUser.updateEmail(utl.refineString(text,"_")+"@taptap.com");
-
+                    utl.inputDialog(ctx,"Enter Your Name","",TYPE_DEF,cb);
 
                     }
-                }
+                } catch(e: Exception) {
 
 
-                utl.inputDialog(ctx,"Enter Your Name","",TYPE_DEF,cb);
+
+                    var cb: utl.InputDialogCallback = object : utl.InputDialogCallback {
+                        override fun onDone(text: String) {
+
+
+                            utl.setKey("user",text,ctx)
+                            currentUser?.updateEmail(utl.refineString(text,"_")+"@taptap.com");
+
+                            curuser=currentUser
+
+                        }
+                    }
+
+
+                    utl.inputDialog(ctx,"Enter Your Name","",TYPE_DEF,cb);
+
 
                 }
 
@@ -610,7 +632,14 @@ lateinit var item1:MenuItem
             var scr:Score= Score()
             scr.dateTime=utl.date
             scr.fireId=curuser?.uid
-            scr.name=curuser?.email?.replace("@taptap.com","")?.replace("_"," ")
+            scr.name=""+curuser?.email?.replace("@taptap.com","")?.replace("_"," ")
+
+            if(scr.name.toString().length<2)
+            {
+                scr.name=utl.getDeviceName()
+                curuser?.updateEmail(utl.getDeviceName()+"@taptap.com")
+                utl.log("Dev Name",utl.getDeviceName())
+            }
             scr.score=scor
             scr.reflex=roundoff(avg,3)
 
