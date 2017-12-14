@@ -31,29 +31,12 @@ class LeatherBoard : AppCompatActivity() {
 
         scores = FirebaseDatabase.getInstance(Constants.fireURL()).getReference("TapTapTiles").child("scores")
 
-        findViewById(R.id.name).setOnLongClickListener {
-
-                setOnce=true
-                scores.removeValue()
-
-                for(sc2r in bkp)
-                {
-                    scores.push().setValue(sc2r)
-
-                }
-
-
-
-
-            false
-        }
 
         scores.addValueEventListener(object : ValueEventListener {
             override fun onDataChange(dataSnapshot: DataSnapshot) {
 
                 var i=0
 
-                if(!setOnce) {
 
                     score_list = ArrayList<Score?>()
 
@@ -69,14 +52,12 @@ class LeatherBoard : AppCompatActivity() {
                     setUpScores(score_list)
                 }
 
-            }
+
 
             override fun onCancelled(databaseError: DatabaseError) {
 
             }
         })
-
-
 
 
 
@@ -97,6 +78,8 @@ class LeatherBoard : AppCompatActivity() {
         var adap=GRecyclerAdapter(this,process(sortedList) )
         listr.layoutManager=LinearLayoutManager(this)
         listr.adapter=adap
+
+
 
         if(useRecycler)
             return;
@@ -195,6 +178,17 @@ class LeatherBoard : AppCompatActivity() {
         }
 
         bkp=l2
+        if(!setOnce)
+        {
+            setOnce=true
+            scores.removeValue()
+            for(sc2r in l2)
+            {
+                scores.push().setValue(sc2r)
+
+            }
+        }
+
 
 
         return l2

@@ -289,6 +289,21 @@ class MainActivity : AppCompatActivity() {
         }
 
 
+        lit.setOnClickListener {
+
+            hit()
+            if(moo.isPlaying) {
+                moo.seekTo(0)
+                moo.pause()
+            }
+
+            var int:Intent=Intent(ctx,LeatherBoard::class.java)
+            startActivity(int)
+
+        }
+
+
+
 //        music.prepare()
 
 
@@ -747,10 +762,12 @@ class MainActivity : AppCompatActivity() {
     override fun onPause() {
         try {
             utl.l("ONPAUSE SATS",game.STATE)
-
+            endMusic()
             if(game.STATE!=game.ENDED)
-            {game?.end()
-            endMusic()}
+            {
+                game?.end()
+                endMusic()
+            }
         } catch(e: Exception) {
         }
         super.onPause()
