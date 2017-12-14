@@ -83,14 +83,17 @@ class MainActivity : AppCompatActivity() {
 
 
 
+            utl.l("email "+curuser)
             utl.l("Current email : "+curuser?.email+"\nlen : ")
 
-            if( currentUser?.email.toString().length<2||currentUser?.email==null)
+            if( currentUser?.email.toString().length<2||currentUser?.email==null||currentUser?.email.toString().contains("null"))
             {
 
 
+                utl.log("Get Email")
+
                 try {
-                    if(utl.getKey("user",ctx)!=null||utl.getKey("user",ctx).length<2)
+                   /* if(utl.getKey("user",ctx)!=null||utl.getKey("user",ctx).length<2)
                     {
                         currentUser?.updateEmail(utl.refineString(utl.getKey("user",ctx),"_")+"@taptap.com");
 
@@ -98,7 +101,7 @@ class MainActivity : AppCompatActivity() {
                     }
                     else{
 
-
+*/
 
 
 
@@ -107,19 +110,21 @@ class MainActivity : AppCompatActivity() {
 
 
                             utl.setKey("user",text,ctx)
-                            currentUser?.updateEmail(utl.refineString(text,"_")+"@taptap.com");
+                            mAuth.getCurrentUser()?.updateEmail(utl.refineString(text,"_")+"@taptap.com");
 
-                            curuser=currentUser
+                            curuser= mAuth.getCurrentUser()
+
 
                         }
                     }
 
 
-                    utl.inputDialog(ctx,"Enter Your Name","",TYPE_DEF,cb);
+                    utl.inputDialog(ctx,"Enter Your Name","Try a different name if you see this again",TYPE_DEF,cb);
 
-                    }
+
                 } catch(e: Exception) {
 
+                    e.printStackTrace()
 
 
                     var cb: utl.InputDialogCallback = object : utl.InputDialogCallback {
@@ -127,15 +132,16 @@ class MainActivity : AppCompatActivity() {
 
 
                             utl.setKey("user",text,ctx)
-                            currentUser?.updateEmail(utl.refineString(text,"_")+"@taptap.com");
+                            mAuth.getCurrentUser()?.updateEmail(utl.refineString(text,"_")+"@taptap.com");
+                            curuser= mAuth.getCurrentUser()
 
-                            curuser=currentUser
+
 
                         }
                     }
 
 
-                    utl.inputDialog(ctx,"Enter Your Name","",TYPE_DEF,cb);
+                    utl.inputDialog(ctx,"Enter Your Name","Try a different name if you see this again",TYPE_DEF,cb);
 
 
                 }
@@ -171,7 +177,7 @@ class MainActivity : AppCompatActivity() {
                             }
 
 
-                            utl.inputDialog(ctx,"Enter Your Name","",TYPE_DEF,cb);
+                            utl.inputDialog(ctx,"Enter Your Name","Try a different name if you see this again",TYPE_DEF,cb);
 
 
 
