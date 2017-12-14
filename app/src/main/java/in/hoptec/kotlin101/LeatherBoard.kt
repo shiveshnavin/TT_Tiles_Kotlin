@@ -14,11 +14,13 @@ import kotlinx.android.synthetic.main.activity_leatherboard.*
 import kotlinx.android.synthetic.main.activity_splash.*
 import java.lang.Double
 import java.util.ArrayList
+import java.util.stream.Collectors
 
 class LeatherBoard : AppCompatActivity() {
 
     lateinit var scores:DatabaseReference
 
+    var setOnce=false
     lateinit var score_list:ArrayList<Score?>
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -29,25 +31,43 @@ class LeatherBoard : AppCompatActivity() {
 
         scores = FirebaseDatabase.getInstance(Constants.fireURL()).getReference("TapTapTiles").child("scores")
 
+        findViewById(R.id.name).setOnLongClickListener {
+
+                setOnce=true
+                scores.removeValue()
+
+                for(sc2r in bkp)
+                {
+                    scores.push().setValue(sc2r)
+
+                }
+
+
+
+
+            false
+        }
 
         scores.addValueEventListener(object : ValueEventListener {
             override fun onDataChange(dataSnapshot: DataSnapshot) {
 
                 var i=0
 
+                if(!setOnce) {
 
-                score_list = ArrayList<Score?>()
+                    score_list = ArrayList<Score?>()
 
-                for (dc in dataSnapshot.children) {
+                    for (dc in dataSnapshot.children) {
 
-                    val scr = dc.getValue(Score::class.java)
+                        val scr = dc.getValue(Score::class.java)
 
-                    score_list.add(scr)
+                        score_list.add(scr)
 
 
+                    }
+
+                    setUpScores(score_list)
                 }
-
-                setUpScores(score_list)
 
             }
 
@@ -59,24 +79,24 @@ class LeatherBoard : AppCompatActivity() {
 
 
 
+
+
     }
     var useRecycler=true
     fun setUpScores(scrs:ArrayList<Score?> )
     {
-        var sortedList = scrs.sortedWith(compareBy({ it?.score }))
+        var sortedList = ArrayList(scrs.sortedWith(compareBy({ it?.score })))
 
         for (obj in sortedList) {
             println(obj?.score)
         }
 
-        sortedList= sortedList.reversed()
+         sortedList.reverse()
 
 
-        var adap=GRecyclerAdapter(this,sortedList)
+        var adap=GRecyclerAdapter(this,process(sortedList) )
         listr.layoutManager=LinearLayoutManager(this)
         listr.adapter=adap
-
-
 
         if(useRecycler)
             return;
@@ -114,8 +134,72 @@ class LeatherBoard : AppCompatActivity() {
 
 
 
-
-
     }
 
+
+    fun sortDesc(list:ArrayList<Score?>): ArrayList<Score?>
+    {
+
+        var sortedList = ArrayList(list.sortedWith(compareBy({ it?.score })))
+
+        for (obj in sortedList) {
+            println(obj?.score)
+        }
+
+
+        return sortedList
+    }
+
+
+
+    fun process(list:ArrayList<Score?>): ArrayList<Score?>
+    {
+        var ret  =ArrayList<Score?>()
+
+        for(obj in list)
+        {
+            var name=obj?.name
+
+            for(r in ret)
+            {
+                if( r?.name.equals(name))
+                    break;
+            }
+
+            var retn  =ArrayList<Score?>()
+
+            for(onji in list)
+            {
+                if(onji?.name.equals(name)){
+                    retn.add(onji)
+                }
+            }
+            var sort_onji=sortDesc(retn)
+            ret.add(sort_onji.get(sort_onji.size-1))
+
+        }
+
+
+
+        var lst=ArrayList<Score?>(sortDesc(ret).reversed())
+
+
+        val l1 = ArrayList<Score?>(lst)
+        val l2 = ArrayList<Score?>()
+
+        val iterator = l1.iterator()
+
+        while (iterator.hasNext()) {
+            val o = iterator.next() as Score
+            if (!l2.contains(o)) l2.add(o)
+        }
+
+        bkp=l2
+
+
+        return l2
+    }
+
+
+    lateinit var bkp : ArrayList<Score?>
 }

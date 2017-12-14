@@ -481,6 +481,7 @@ class MainActivity : AppCompatActivity() {
 
         }
 
+
         override fun onGameEnd(scor2: Any) {
 
 
