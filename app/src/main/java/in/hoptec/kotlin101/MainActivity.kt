@@ -85,7 +85,7 @@ class MainActivity : AppCompatActivity() {
 
             utl.l("Current email : "+curuser?.email+"\nlen : ")
 
-            if( currentUser?.email.toString().length<2)
+            if( currentUser?.email.toString().length<2||currentUser?.email==null)
             {
 
 
@@ -634,7 +634,7 @@ lateinit var item1:MenuItem
             scr.fireId=curuser?.uid
             scr.name=""+curuser?.email?.replace("@taptap.com","")?.replace("_"," ")
 
-            if(scr.name.toString().length<2)
+            if(scr.name.toString().length<2||scr.name.toString().contains("null"))
             {
                 scr.name=utl.getDeviceName()
                 curuser?.updateEmail(utl.getDeviceName()+"@taptap.com")
