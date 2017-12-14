@@ -26,6 +26,15 @@ class GRecyclerAdapter(private val mContext: Context, private val feedItemList: 
         customViewHolder.score.text = ""+item?.score
         customViewHolder.reflex.text = ""+item?.reflex+"s"
         customViewHolder.name.text = ""+item?.name
+
+        try {
+            if(item?.name.equals(utl.getKey("scr_name",mContext)))
+            {
+                utl.animateBackGround(customViewHolder.base,"#ff0b8043","#ff0097a7",true,1000);
+                customViewHolder.base.setBackgroundColor(R.color.green_600)
+            }
+        } catch(e: Exception) {
+        }
     }
 
     override fun getItemCount(): Int {

@@ -82,6 +82,7 @@ class MainActivity : AppCompatActivity() {
 
 
 
+
             utl.l("Current email : "+curuser?.email)
 
             if(currentUser.email==null||currentUser.email.toString().length<2)
@@ -96,6 +97,7 @@ class MainActivity : AppCompatActivity() {
 
                 }
                 else{
+
 
 
 
@@ -173,6 +175,7 @@ class MainActivity : AppCompatActivity() {
         utl.fullScreen(this)
         ctx=this
         act=this
+
         AndroidNetworking.initialize(this)
         setContentView(R.layout.activity_main)
 
@@ -243,6 +246,7 @@ class MainActivity : AppCompatActivity() {
 
         setSupportActionBar(toolbar)
 
+        getSoundSettings()
         name.setOnLongClickListener {
 
              LV1=10
@@ -313,7 +317,47 @@ class MainActivity : AppCompatActivity() {
 
     }
 
+    fun getSoundSettings()
+    {
 
+        var en: String = ""
+        try {
+            en = utl.getKey("sound",ctx)
+        } catch(e: Exception) {
+            utl.l("sound 324")
+            utl.setKey("sound","1",ctx)
+            getSoundSettings()
+        }
+        if(en==null)
+        {
+            utl.setKey("sound","1",ctx)
+            utl.l("SOund 331")
+        }
+
+        en=utl.getKey("sound",ctx)
+        utl.l("sound 336 " ,en)
+
+        isSoundEnabled = en.equals("1")
+
+
+        try {
+            if(isSoundEnabled)
+            {
+                 item1 .icon=resources.getDrawable(R.drawable.ic_volume_up_white_48dp)
+
+
+            }
+            else{
+                 item1. icon=resources.getDrawable(R.drawable.ic_volume_off_white_48dp)
+
+
+
+            }
+        } catch(e: Exception) {
+        }
+
+    }
+lateinit var item1:MenuItem
     override fun onOptionsItemSelected(item: MenuItem?): Boolean {
 
         when (item?.getItemId()) {
@@ -322,7 +366,29 @@ class MainActivity : AppCompatActivity() {
 
 
 
-                utl.snack(act,"Settings coming soon !")
+                if(isSoundEnabled)
+                {
+                    isSoundEnabled=false
+                    utl.setKey("sound","0",ctx)
+                    item.icon=resources.getDrawable(R.drawable.ic_volume_off_white_48dp)
+                    try {
+                        endMusic()
+                    } catch(e: Exception) {
+                    }
+
+                }
+                else{
+                    isSoundEnabled=true
+                    utl.setKey("sound","1",ctx)
+                    item.icon=resources.getDrawable(R.drawable.ic_volume_up_white_48dp)
+                    try {
+                        startMusic()
+                    } catch(e: Exception) {
+                    }
+
+                }
+
+               // utl.snack(act,"Settings coming soon !")
 
                 return true
             }
@@ -343,13 +409,16 @@ class MainActivity : AppCompatActivity() {
 
         return super.onOptionsItemSelected(item)
     }
-
-    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+    var isSoundEnabled : Boolean =true
+    override fun onCreateOptionsMenu(menu: Menu ): Boolean {
 
 
         val inflater = menuInflater
         inflater.inflate(R.menu.main, menu)
 
+        item1=menu?.findItem(R.id.setting)
+
+        getSoundSettings()
         return true
 
     }
@@ -548,6 +617,8 @@ class MainActivity : AppCompatActivity() {
             firebaseDatabase.child("scores").push().setValue(scr)
 
 
+            utl.setKey("scr_name",""+scr.name,ctx)
+
 
 
         }
@@ -627,6 +698,10 @@ class MainActivity : AppCompatActivity() {
     fun startMusic()
     {
 
+        utl.l("sound at startMusic",isSoundEnabled)
+        if(!isSoundEnabled)
+            return
+
 
         MUSIC_STARTED=true
         try {
@@ -671,7 +746,6 @@ class MainActivity : AppCompatActivity() {
     fun hit()
     {
 
-
         try {
             playSound(1)
            /* if(hit.isPlaying)
@@ -687,6 +761,9 @@ class MainActivity : AppCompatActivity() {
 
     fun laugh()
     {
+
+        if(!isSoundEnabled)
+            return
 
         try {
             moo.start()
@@ -752,6 +829,10 @@ class MainActivity : AppCompatActivity() {
         }
 
          fun playSound(sound: Int) {
+
+             if(!isSoundEnabled)
+                 return
+
 
              try {
                  soundPool!!.play(sm!![sound], 1f, 1f, 1, 0, 1f)
