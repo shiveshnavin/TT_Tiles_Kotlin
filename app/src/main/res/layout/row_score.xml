@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+     android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <LinearLayout
+        android:id="@+id/main"
+
+        android:orientation="horizontal"
+        android:weightSum="1"
+        android:layout_width="match_parent"
+        android:layout_height="40dp">
+
+    <com.daniribalbert.customfontlib.views.CustomFontTextView
+        android:layout_weight="0.15"
+        android:textSize="16sp"
+        android:gravity="center"
+        android:textColor="@color/yellow_300"
+        app:font="avenir-next-regular"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:text="1"
+        android:id="@+id/snom" />
+
+
+    <com.daniribalbert.customfontlib.views.CustomFontTextView
+        android:layout_weight="0.55"
+        android:textSize="16sp"
+        android:gravity="left|center_vertical"
+        android:textColor="@color/yellow_300"
+        app:font="avenir-next-regular"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:text="1"
+        android:id="@+id/name" />
+
+
+
+    <com.daniribalbert.customfontlib.views.CustomFontTextView
+        android:layout_weight="0.15"
+        android:textSize="16sp"
+        android:gravity="center"
+        android:textColor="@color/yellow_300"
+        app:font="avenir-next-regular"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:text="0.25"
+        android:id="@+id/score" />
+
+
+
+    <com.daniribalbert.customfontlib.views.CustomFontTextView
+        android:layout_weight="0.15"
+        android:textSize="16sp"
+        android:gravity="center"
+        android:textColor="@color/yellow_300"
+        app:font="avenir-next-regular"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:text="0.25"
+        android:id="@+id/reflex" />
+
+
+
+
+
+</LinearLayout>
+
+    <View
+        android:background="@color/grey_700"
+        android:layout_width="match_parent"
+        android:layout_height="0.2dp"/>
+
+
+
+
+
+</LinearLayout>

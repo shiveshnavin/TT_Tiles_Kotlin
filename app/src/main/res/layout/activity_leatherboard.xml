@@ -34,28 +34,111 @@
         android:id="@+id/name"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="55dp" />
+        android:layout_marginTop="50dp" />
 
 
 
     <LinearLayout
-        android:gravity="center"
-        android:layout_marginTop="10dp"
-        android:id="@+id/list"
+        android:id="@+id/head"
+        android:layout_marginTop="20dp"
         android:orientation="vertical"
         android:weightSum="9"
         android:layout_below="@+id/name"
         android:layout_width="500dp"
-        android:layout_height="match_parent"
-        android:layout_alignParentBottom="true"
+        android:layout_height="42dp"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true">
 
 
+        <View
+            android:background="@color/black"
+            android:layout_width="match_parent"
+            android:layout_height="0.2dp"/>
+
+        <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+            xmlns:app="http://schemas.android.com/apk/res-auto"
+            android:orientation="horizontal"
+            android:weightSum="1"
+            android:layout_width="match_parent"
+            android:layout_height="40dp">
 
 
+            <com.daniribalbert.customfontlib.views.CustomFontTextView
+                android:layout_weight="0.15"
+                android:textSize="16sp"
+                android:gravity="center"
+                android:textColor="@color/yellow_500"
+                app:font="avenir-next-regular"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:text="Rank" />
+
+
+            <com.daniribalbert.customfontlib.views.CustomFontTextView
+                android:layout_weight="0.55"
+                android:textSize="16sp"
+                android:gravity="left|center_vertical"
+                android:textColor="@color/yellow_500"
+                app:font="avenir-next-regular"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:text="Player" />
+
+
+
+            <com.daniribalbert.customfontlib.views.CustomFontTextView
+                android:layout_weight="0.15"
+                android:textSize="16sp"
+                android:gravity="center"
+                android:textColor="@color/yellow_500"
+                app:font="avenir-next-regular"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:text="Score" />
+
+
+
+            <com.daniribalbert.customfontlib.views.CustomFontTextView
+                android:layout_weight="0.15"
+                android:textSize="16sp"
+                android:gravity="center"
+                android:textColor="@color/yellow_500"
+                app:font="avenir-next-regular"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:text="Reflex" />
+
+
+        </LinearLayout>
+
+    <View
+        android:background="@color/black"
+        android:layout_width="match_parent"
+        android:layout_height="0.2dp"/>
 
     </LinearLayout>
 
+    <android.support.v7.widget.RecyclerView
+        android:layout_below="@+id/head"
+        android:id="@+id/listr"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+    </android.support.v7.widget.RecyclerView>
+
+
+    <ScrollView
+        android:visibility="gone"
+        android:layout_below="@+id/head"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <LinearLayout
+
+            android:orientation="vertical"
+            android:id="@+id/list"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"></LinearLayout>
+
+    </ScrollView>
 
 </RelativeLayout>

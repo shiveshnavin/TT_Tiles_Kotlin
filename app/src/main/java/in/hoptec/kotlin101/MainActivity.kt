@@ -82,15 +82,15 @@ class MainActivity : AppCompatActivity() {
 
 
 
-            utl.l("Current user : "+curuser?.displayName)
+            utl.l("Current email : "+curuser?.email)
 
-            if(currentUser.displayName==null)
+            if(currentUser.email==null||currentUser.email.toString().length<2)
             {
 
 
 
 
-                if(utl.getKey("user",ctx)!=null)
+                if(utl.getKey("user",ctx)!=null||utl.getKey("user",ctx).length<2)
                 {
                     currentUser.updateEmail(utl.refineString(utl.getKey("user",ctx),"_")+"@taptap.com");
 
@@ -487,7 +487,7 @@ class MainActivity : AppCompatActivity() {
             LIFE=3
             endMusic()
             laugh()
-            score.setText("Score : "+scor2.toString())
+            score.setText("Hits : "+scor2.toString())
 
             score_i=0
             sqr=3
@@ -745,7 +745,11 @@ class MainActivity : AppCompatActivity() {
 
     override fun onPause() {
         try {
-            game?.pause()
+            utl.l("ONPAUSE SATS",game.STATE)
+
+            if(game.STATE!=game.ENDED)
+            {game?.end()
+            endMusic()}
         } catch(e: Exception) {
         }
         super.onPause()
