@@ -74,7 +74,7 @@
         android:textColor="@color/yellow_400"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Powered By : Kotlin"
+        android:text=" "
         android:id="@+id/kotlin"
         android:layout_below="@+id/score"
         android:layout_centerHorizontal="true" />

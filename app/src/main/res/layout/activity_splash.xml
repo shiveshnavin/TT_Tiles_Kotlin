@@ -43,7 +43,7 @@
         app:font="avenir-next-regular"
         android:layout_width="match_parent"
         android:layout_height="40dp"
-        android:text="Powered By : Kotlin\nShivesh N"
+        android:text="By \nShivesh"
         android:id="@+id/name2"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true" />
